@@ -29,7 +29,7 @@ A significantly improved version of the original Discord UI library for Roblox w
 
 ```lua
 -- Load the library
-local DiscordLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USERNAME/enhanced-discord-lib/main/discord-lib.lua"))()
+local DiscordLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/ProphecySkondo/enhanced-discord-lib/main/discord-lib.lua"))()
 
 -- Create a window
 local win = DiscordLib:Window("Enhanced Discord Library")
@@ -146,7 +146,7 @@ This library maintains **100% API compatibility** with the original Discord libr
 local DiscordLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/discord%20lib.txt"))()
 
 -- New  
-local DiscordLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USERNAME/enhanced-discord-lib/main/discord-lib.lua"))()
+local DiscordLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/ProphecySkondo/enhanced-discord-lib/main/discord-lib.lua"))()
 ```
 
 All your existing code will work unchanged while benefiting from improved performance, animations, and visual enhancements.
@@ -191,6 +191,4 @@ This enhanced version maintains compatibility with the original while adding sig
 
 ⭐ **Star this repo if you find it useful!**
 
-**Raw URL:** `https://raw.githubusercontent.com/YOUR_USERNAME/enhanced-discord-lib/main/discord-lib.lua`
-
-*Replace `YOUR_USERNAME` with your actual GitHub username after uploading.*
+**Raw URL:** `https://raw.githubusercontent.com/ProphecySkondo/enhanced-discord-lib/main/discord-lib.lua`
