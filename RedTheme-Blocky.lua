@@ -1,12 +1,11 @@
 --[[
-    RED THEME GUI LIBRARY
-    Professional interface with red border theme
+    RED THEME BLOCKY GUI LIBRARY
+    Clean blocky interface with red borders
 ]]
 
 -- Services
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
-local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
@@ -26,11 +25,7 @@ for _, effect in pairs(game.Lighting:GetChildren()) do
     end
 end
 
-print("[RED-THEME] Loading GUI Library...")
-
--- ═══════════════════════════════════════════════════════════════════════════════════════════
--- LIBRARY CONFIGURATION
--- ═══════════════════════════════════════════════════════════════════════════════════════════
+print("[RED-THEME] Loading Blocky GUI Library...")
 
 local RedThemeLib = {}
 
@@ -39,58 +34,40 @@ local Config = {
     AnimationSpeed = 0.25,
     BlurIntensity = 15,
     EnableAnimations = true,
-    EnableBlur = true,
-    EnableSounds = true,
-    Theme = "RedDark"
+    EnableBlur = true
 }
 
 -- Red Theme Colors
 local Theme = {
-    -- Main Colors
     Background = Color3.fromRGB(67, 67, 67),      -- Main background
     Sidebar = Color3.fromRGB(25, 9, 9),           -- Dark red sidebar
     Border = Color3.fromRGB(255, 0, 0),           -- Red border
     
-    -- Text Colors
     TextPrimary = Color3.fromRGB(255, 255, 255),   -- White text
     TextSecondary = Color3.fromRGB(200, 200, 200), -- Light gray text
-    TextMuted = Color3.fromRGB(150, 150, 150),     -- Muted text
     
-    -- Accent Colors
     AccentRed = Color3.fromRGB(255, 50, 50),       -- Bright red
     AccentDarkRed = Color3.fromRGB(150, 30, 30),   -- Dark red
     Success = Color3.fromRGB(46, 125, 50),         -- Green
     Warning = Color3.fromRGB(255, 152, 0),         -- Orange
     Error = Color3.fromRGB(244, 67, 54),           -- Red error
     
-    -- Interactive Colors
     ButtonNormal = Color3.fromRGB(45, 45, 45),
     ButtonHover = Color3.fromRGB(60, 60, 60),
-    ButtonActive = Color3.fromRGB(255, 50, 50),
-    
-    -- Transparency
-    BackgroundTransparency = 0,
-    SidebarTransparency = 0,
 }
 
--- Assets (Icons)
+-- Assets
 local Assets = {
     ["add"] = "rbxassetid://14368300605",
     ["alert"] = "rbxassetid://14368301329",
     ["home"] = "rbxassetid://14368292698",
     ["settings"] = "rbxassetid://14368293672",
-    ["close"] = "rbxassetid://14368294239",
-    ["minimize"] = "rbxassetid://14368295058",
 }
 
--- ═══════════════════════════════════════════════════════════════════════════════════════════
--- UTILITY FUNCTIONS
--- ═══════════════════════════════════════════════════════════════════════════════════════════
-
+-- Utils
 local Utils = {}
 
--- Create smooth tween animation
-function Utils.Tween(object, properties, duration, easingStyle, easingDirection)
+function Utils.Tween(object, properties, duration)
     if not Config.EnableAnimations then
         for property, value in pairs(properties) do
             object[property] = value
@@ -100,8 +77,8 @@ function Utils.Tween(object, properties, duration, easingStyle, easingDirection)
     
     local info = TweenInfo.new(
         duration or Config.AnimationSpeed,
-        easingStyle or Enum.EasingStyle.Quad,
-        easingDirection or Enum.EasingDirection.Out
+        Enum.EasingStyle.Quad,
+        Enum.EasingDirection.Out
     )
     
     local tween = TweenService:Create(object, info, properties)
@@ -109,35 +86,6 @@ function Utils.Tween(object, properties, duration, easingStyle, easingDirection)
     return tween
 end
 
--- Create ripple effect
-function Utils.CreateRipple(frame, position)
-    if not Config.EnableAnimations then return end
-    
-    local ripple = Instance.new("Frame")
-    ripple.Name = "Ripple"
-    ripple.BackgroundColor3 = Theme.AccentRed
-    ripple.BackgroundTransparency = 0.7
-    ripple.BorderSizePixel = 0
-    ripple.Size = UDim2.new(0, 0, 0, 0)
-    ripple.AnchorPoint = Vector2.new(0.5, 0.5)
-    ripple.Position = UDim2.new(0, position.X - frame.AbsolutePosition.X, 0, position.Y - frame.AbsolutePosition.Y)
-    ripple.Parent = frame
-    
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(1, 0)
-    corner.Parent = ripple
-    
-    local maxSize = math.max(frame.AbsoluteSize.X, frame.AbsoluteSize.Y) * 2
-    
-    Utils.Tween(ripple, {
-        Size = UDim2.new(0, maxSize, 0, maxSize),
-        BackgroundTransparency = 1
-    }, 0.6)
-    
-    game:GetService("Debris"):AddItem(ripple, 0.6)
-end
-
--- Make frame draggable
 function Utils.MakeDraggable(frame, dragArea)
     local dragArea = dragArea or frame
     local dragging = false
@@ -149,8 +97,6 @@ function Utils.MakeDraggable(frame, dragArea)
             dragging = true
             dragStart = input.Position
             startPos = frame.Position
-            
-            Utils.CreateRipple(dragArea, input.Position)
         end
     end)
     
@@ -168,30 +114,12 @@ function Utils.MakeDraggable(frame, dragArea)
     end)
 end
 
--- Create professional notification
 function Utils.Notify(title, message, notificationType, duration)
-    notificationType = notificationType or "info"
-    duration = duration or 3
-    
-    local notificationColors = {
-        success = Theme.Success,
-        warning = Theme.Warning,
-        error = Theme.Error,
-        info = Theme.AccentRed
-    }
-    
-    local color = notificationColors[notificationType] or Theme.AccentRed
-    
-    -- Create notification (simple implementation for now)
-    print("[" .. string.upper(notificationType) .. "] " .. title .. ": " .. message)
-    
+    print("[" .. string.upper(notificationType or "INFO") .. "] " .. title .. ": " .. message)
     return true
 end
 
--- ═══════════════════════════════════════════════════════════════════════════════════════════
--- MAIN GUI CREATION
--- ═══════════════════════════════════════════════════════════════════════════════════════════
-
+-- Main GUI Creation
 function RedThemeLib:CreateWindow(options)
     options = options or {}
     local title = options.Title or "Red Theme GUI"
@@ -200,8 +128,7 @@ function RedThemeLib:CreateWindow(options)
     
     local windowData = {
         tabs = {},
-        currentTab = nil,
-        elements = {}
+        currentTab = nil
     }
     
     -- Main ScreenGui
@@ -217,7 +144,7 @@ function RedThemeLib:CreateWindow(options)
     blurEffect.Size = Config.EnableBlur and Config.BlurIntensity or 0
     blurEffect.Parent = game.Lighting
     
-    -- Main Frame
+    -- Main Frame - BLOCKY (no corners)
     local mainFrame = Instance.new("Frame")
     mainFrame.Name = "Main"
     mainFrame.Parent = screenGui
@@ -227,13 +154,9 @@ function RedThemeLib:CreateWindow(options)
     mainFrame.Size = size
     mainFrame.Position = position
     mainFrame.ClipsDescendants = true
+    -- NO UICorner - BLOCKY!
     
-    -- Main frame corner
-    local mainCorner = Instance.new("UICorner")
-    mainCorner.CornerRadius = UDim.new(0, 6)
-    mainCorner.Parent = mainFrame
-    
-    -- Sidebar Frame
+    -- Sidebar Frame - BLOCKY
     local sidebar = Instance.new("Frame")
     sidebar.Name = "Sidebar"
     sidebar.Parent = mainFrame
@@ -241,13 +164,9 @@ function RedThemeLib:CreateWindow(options)
     sidebar.BorderSizePixel = 0
     sidebar.Size = UDim2.new(0, 115, 1, 0)
     sidebar.Position = UDim2.new(0, 0, 0, 0)
+    -- NO UICorner - BLOCKY!
     
-    -- Sidebar corner
-    local sidebarCorner = Instance.new("UICorner")
-    sidebarCorner.CornerRadius = UDim.new(0, 6)
-    sidebarCorner.Parent = sidebar
-    
-    -- Title Frame (in sidebar)
+    -- Title Frame - BLOCKY
     local titleFrame = Instance.new("Frame")
     titleFrame.Name = "TitleFrame"
     titleFrame.Parent = sidebar
@@ -256,26 +175,51 @@ function RedThemeLib:CreateWindow(options)
     titleFrame.BorderSizePixel = 1
     titleFrame.Size = UDim2.new(1, 0, 0, 40)
     titleFrame.Position = UDim2.new(0, 0, 0, 0)
-    
-    local titleCorner = Instance.new("UICorner")
-    titleCorner.CornerRadius = UDim.new(0, 6)
-    titleCorner.Parent = titleFrame
+    -- NO UICorner - BLOCKY!
     
     -- Title Label
     local titleLabel = Instance.new("TextLabel")
     titleLabel.Name = "Title"
     titleLabel.Parent = titleFrame
     titleLabel.BackgroundTransparency = 1
-    titleLabel.Size = UDim2.new(1, -10, 1, 0)
+    titleLabel.Size = UDim2.new(1, -30, 1, 0)
     titleLabel.Position = UDim2.new(0, 5, 0, 0)
     titleLabel.Text = title
     titleLabel.TextColor3 = Theme.TextPrimary
-    titleLabel.TextScaled = false
     titleLabel.TextSize = 12
-    titleLabel.Font = Enum.Font.JosefinSans
-    titleLabel.FontFace = Font.new("rbxasset://fonts/families/JosefinSans.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    titleLabel.Font = Enum.Font.SourceSans
+    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
     
-    -- Username Label (at bottom of sidebar)
+    -- Close Button - BLOCKY
+    local closeButton = Instance.new("TextButton")
+    closeButton.Name = "CloseButton"
+    closeButton.Parent = titleFrame
+    closeButton.BackgroundColor3 = Theme.Error
+    closeButton.BorderSizePixel = 0
+    closeButton.Size = UDim2.new(0, 20, 0, 20)
+    closeButton.Position = UDim2.new(1, -25, 0, 10)
+    closeButton.Text = "X"
+    closeButton.TextColor3 = Theme.TextPrimary
+    closeButton.TextSize = 12
+    closeButton.Font = Enum.Font.SourceSansBold
+    -- NO UICorner - BLOCKY!
+    
+    closeButton.MouseButton1Click:Connect(function()
+        Utils.Tween(mainFrame, {Size = UDim2.new(0, 0, 0, 0)}, 0.3)
+        Utils.Tween(blurEffect, {Size = 0}, 0.3)
+        task.wait(0.3)
+        screenGui:Destroy()
+    end)
+    
+    closeButton.MouseEnter:Connect(function()
+        Utils.Tween(closeButton, {BackgroundColor3 = Theme.AccentRed}, 0.2)
+    end)
+    
+    closeButton.MouseLeave:Connect(function()
+        Utils.Tween(closeButton, {BackgroundColor3 = Theme.Error}, 0.2)
+    end)
+    
+    -- Username Label
     local usernameLabel = Instance.new("TextLabel")
     usernameLabel.Name = "Username"
     usernameLabel.Parent = sidebar
@@ -284,12 +228,10 @@ function RedThemeLib:CreateWindow(options)
     usernameLabel.Position = UDim2.new(0, 5, 1, -30)
     usernameLabel.Text = LocalPlayer.Name
     usernameLabel.TextColor3 = Theme.TextSecondary
-    usernameLabel.TextScaled = false
     usernameLabel.TextSize = 10
-    usernameLabel.Font = Enum.Font.JosefinSans
-    usernameLabel.FontFace = Font.new("rbxasset://fonts/families/JosefinSans.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+    usernameLabel.Font = Enum.Font.SourceSans
     
-    -- Tab Container (in sidebar)
+    -- Tab Container
     local tabContainer = Instance.new("Frame")
     tabContainer.Name = "TabContainer"
     tabContainer.Parent = sidebar
@@ -302,7 +244,7 @@ function RedThemeLib:CreateWindow(options)
     tabLayout.SortOrder = Enum.SortOrder.LayoutOrder
     tabLayout.Padding = UDim.new(0, 2)
     
-    -- Content Frame (Scrolling Overlay)
+    -- Content Frame - BLOCKY
     local contentFrame = Instance.new("ScrollingFrame")
     contentFrame.Name = "ContentFrame"
     contentFrame.Parent = mainFrame
@@ -327,7 +269,7 @@ function RedThemeLib:CreateWindow(options)
     contentPadding.PaddingRight = UDim.new(0, 10)
     contentPadding.PaddingBottom = UDim.new(0, 10)
     
-    -- Update content size automatically
+    -- Update content size
     local function updateContentSize()
         contentFrame.CanvasSize = UDim2.new(0, 0, 0, contentLayout.AbsoluteContentSize.Y + 20)
     end
@@ -336,39 +278,6 @@ function RedThemeLib:CreateWindow(options)
     
     -- Make window draggable
     Utils.MakeDraggable(mainFrame, titleFrame)
-    
-    -- Close functionality (X button)
-    local closeButton = Instance.new("TextButton")
-    closeButton.Name = "CloseButton"
-    closeButton.Parent = titleFrame
-    closeButton.BackgroundColor3 = Theme.Error
-    closeButton.BorderSizePixel = 0
-    closeButton.Size = UDim2.new(0, 20, 0, 20)
-    closeButton.Position = UDim2.new(1, -25, 0, 5)
-    closeButton.Text = "×"
-    closeButton.TextColor3 = Theme.TextPrimary
-    closeButton.TextScaled = false
-    closeButton.TextSize = 14
-    closeButton.Font = Enum.Font.GothamBold
-    
-    local closeCorner = Instance.new("UICorner")
-    closeCorner.CornerRadius = UDim.new(0, 4)
-    closeCorner.Parent = closeButton
-    
-    closeButton.MouseButton1Click:Connect(function()
-        Utils.Tween(mainFrame, {Size = UDim2.new(0, 0, 0, 0)}, 0.3)
-        Utils.Tween(blurEffect, {Size = 0}, 0.3)
-        task.wait(0.3)
-        screenGui:Destroy()
-    end)
-    
-    closeButton.MouseEnter:Connect(function()
-        Utils.Tween(closeButton, {BackgroundColor3 = Theme.AccentRed}, 0.2)
-    end)
-    
-    closeButton.MouseLeave:Connect(function()
-        Utils.Tween(closeButton, {BackgroundColor3 = Theme.Error}, 0.2)
-    end)
     
     -- Window Functions
     windowData.screenGui = screenGui
@@ -385,11 +294,10 @@ function RedThemeLib:CreateWindow(options)
         
         local tabData = {
             name = tabName,
-            elements = {},
             visible = false
         }
         
-        -- Tab Button (in sidebar)
+        -- Tab Button - BLOCKY
         local tabButton = Instance.new("TextButton")
         tabButton.Name = tabName .. "Tab"
         tabButton.Parent = tabContainer
@@ -399,10 +307,7 @@ function RedThemeLib:CreateWindow(options)
         tabButton.Size = UDim2.new(1, 0, 0, 35)
         tabButton.Text = ""
         tabButton.AutoButtonColor = false
-        
-        local tabCorner = Instance.new("UICorner")
-        tabCorner.CornerRadius = UDim.new(0, 4)
-        tabCorner.Parent = tabButton
+        -- NO UICorner - BLOCKY!
         
         -- Tab Icon
         local tabIconImage = Instance.new("ImageLabel")
@@ -424,10 +329,8 @@ function RedThemeLib:CreateWindow(options)
         tabLabel.Text = tabName
         tabLabel.TextColor3 = Theme.TextSecondary
         tabLabel.TextXAlignment = Enum.TextXAlignment.Left
-        tabLabel.TextScaled = false
         tabLabel.TextSize = 11
-        tabLabel.Font = Enum.Font.Arial
-        tabLabel.FontFace = Font.new("rbxasset://fonts/families/Arial.json", Enum.FontWeight.Regular, Enum.FontStyle.Italic)
+        tabLabel.Font = Enum.Font.SourceSans
         
         -- Tab Content Container
         local tabContent = Instance.new("Frame")
@@ -461,7 +364,6 @@ function RedThemeLib:CreateWindow(options)
             tabData.visible = true
             
             windowData.currentTab = tabData
-            Utils.CreateRipple(tabButton, {X = tabButton.AbsoluteSize.X/2, Y = tabButton.AbsoluteSize.Y/2})
         end)
         
         tabButton.MouseEnter:Connect(function()
@@ -487,7 +389,6 @@ function RedThemeLib:CreateWindow(options)
         
         -- Auto-select first tab
         if #windowData.tabs == 1 then
-            -- Show this tab
             tabButton.BackgroundColor3 = Theme.AccentDarkRed
             tabIconImage.ImageColor3 = Theme.TextPrimary
             tabLabel.TextColor3 = Theme.TextPrimary
@@ -511,17 +412,12 @@ function RedThemeLib:CreateWindow(options)
             button.Size = UDim2.new(1, -10, 0, 35)
             button.Text = buttonText
             button.TextColor3 = Theme.TextPrimary
-            button.TextScaled = false
             button.TextSize = 12
-            button.Font = Enum.Font.GothamBold
+            button.Font = Enum.Font.SourceSansBold
             button.AutoButtonColor = false
-            
-            local buttonCorner = Instance.new("UICorner")
-            buttonCorner.CornerRadius = UDim.new(0, 4)
-            buttonCorner.Parent = button
+            -- NO UICorner - BLOCKY!
             
             button.MouseButton1Click:Connect(function()
-                Utils.CreateRipple(button, {X = button.AbsoluteSize.X/2, Y = button.AbsoluteSize.Y/2})
                 callback()
             end)
             
@@ -553,10 +449,7 @@ function RedThemeLib:CreateWindow(options)
             toggleFrame.BorderColor3 = Theme.Border
             toggleFrame.BorderSizePixel = 1
             toggleFrame.Size = UDim2.new(1, -10, 0, 35)
-            
-            local toggleCorner = Instance.new("UICorner")
-            toggleCorner.CornerRadius = UDim.new(0, 4)
-            toggleCorner.Parent = toggleFrame
+            -- NO UICorner - BLOCKY!
             
             local toggleLabel = Instance.new("TextLabel")
             toggleLabel.Parent = toggleFrame
@@ -566,9 +459,8 @@ function RedThemeLib:CreateWindow(options)
             toggleLabel.Text = toggleText
             toggleLabel.TextColor3 = Theme.TextPrimary
             toggleLabel.TextXAlignment = Enum.TextXAlignment.Left
-            toggleLabel.TextScaled = false
             toggleLabel.TextSize = 11
-            toggleLabel.Font = Enum.Font.Gotham
+            toggleLabel.Font = Enum.Font.SourceSans
             
             local toggleButton = Instance.new("TextButton")
             toggleButton.Parent = toggleFrame
@@ -578,14 +470,10 @@ function RedThemeLib:CreateWindow(options)
             toggleButton.Position = UDim2.new(1, -60, 0.5, -10)
             toggleButton.Text = defaultValue and "ON" or "OFF"
             toggleButton.TextColor3 = Theme.TextPrimary
-            toggleButton.TextScaled = false
             toggleButton.TextSize = 9
-            toggleButton.Font = Enum.Font.GothamBold
+            toggleButton.Font = Enum.Font.SourceSansBold
             toggleButton.AutoButtonColor = false
-            
-            local toggleButtonCorner = Instance.new("UICorner")
-            toggleButtonCorner.CornerRadius = UDim.new(0, 4)
-            toggleButtonCorner.Parent = toggleButton
+            -- NO UICorner - BLOCKY!
             
             local toggled = defaultValue
             
@@ -597,7 +485,6 @@ function RedThemeLib:CreateWindow(options)
                 }, 0.2)
                 
                 toggleButton.Text = toggled and "ON" or "OFF"
-                Utils.CreateRipple(toggleButton, {X = toggleButton.AbsoluteSize.X/2, Y = toggleButton.AbsoluteSize.Y/2})
                 callback(toggled)
             end)
             
@@ -631,10 +518,7 @@ function RedThemeLib:CreateWindow(options)
             sliderFrame.BorderColor3 = Theme.Border
             sliderFrame.BorderSizePixel = 1
             sliderFrame.Size = UDim2.new(1, -10, 0, 45)
-            
-            local sliderCorner = Instance.new("UICorner")
-            sliderCorner.CornerRadius = UDim.new(0, 4)
-            sliderCorner.Parent = sliderFrame
+            -- NO UICorner - BLOCKY!
             
             local sliderLabel = Instance.new("TextLabel")
             sliderLabel.Parent = sliderFrame
@@ -644,9 +528,8 @@ function RedThemeLib:CreateWindow(options)
             sliderLabel.Text = sliderText .. ": " .. defaultValue
             sliderLabel.TextColor3 = Theme.TextPrimary
             sliderLabel.TextXAlignment = Enum.TextXAlignment.Left
-            sliderLabel.TextScaled = false
             sliderLabel.TextSize = 10
-            sliderLabel.Font = Enum.Font.Gotham
+            sliderLabel.Font = Enum.Font.SourceSans
             
             local sliderTrack = Instance.new("Frame")
             sliderTrack.Parent = sliderFrame
@@ -655,20 +538,14 @@ function RedThemeLib:CreateWindow(options)
             sliderTrack.BorderSizePixel = 1
             sliderTrack.Size = UDim2.new(1, -20, 0, 8)
             sliderTrack.Position = UDim2.new(0, 10, 1, -15)
-            
-            local trackCorner = Instance.new("UICorner")
-            trackCorner.CornerRadius = UDim.new(0, 4)
-            trackCorner.Parent = sliderTrack
+            -- NO UICorner - BLOCKY!
             
             local sliderFill = Instance.new("Frame")
             sliderFill.Parent = sliderTrack
             sliderFill.BackgroundColor3 = Theme.AccentRed
             sliderFill.BorderSizePixel = 0
             sliderFill.Size = UDim2.new((defaultValue - minValue) / (maxValue - minValue), 0, 1, 0)
-            
-            local fillCorner = Instance.new("UICorner")
-            fillCorner.CornerRadius = UDim.new(0, 4)
-            fillCorner.Parent = sliderFill
+            -- NO UICorner - BLOCKY!
             
             local sliderButton = Instance.new("TextButton")
             sliderButton.Parent = sliderTrack
@@ -678,10 +555,7 @@ function RedThemeLib:CreateWindow(options)
             sliderButton.Position = UDim2.new((defaultValue - minValue) / (maxValue - minValue), -6, 0.5, -6)
             sliderButton.Text = ""
             sliderButton.AutoButtonColor = false
-            
-            local sliderButtonCorner = Instance.new("UICorner")
-            sliderButtonCorner.CornerRadius = UDim.new(1, 0)
-            sliderButtonCorner.Parent = sliderButton
+            -- NO UICorner - BLOCKY!
             
             local currentValue = defaultValue
             local dragging = false
@@ -749,13 +623,9 @@ function RedThemeLib:CreateWindow(options)
             label.Size = UDim2.new(1, -10, 0, 25)
             label.Text = labelText
             label.TextColor3 = Theme.TextPrimary
-            label.TextScaled = false
             label.TextSize = 11
-            label.Font = Enum.Font.Gotham
-            
-            local labelCorner = Instance.new("UICorner")
-            labelCorner.CornerRadius = UDim.new(0, 4)
-            labelCorner.Parent = label
+            label.Font = Enum.Font.SourceSans
+            -- NO UICorner - BLOCKY!
             
             -- Update content size
             tabContent.Size = UDim2.new(1, 0, 0, tabContentLayout.AbsoluteContentSize.Y)
@@ -776,18 +646,10 @@ function RedThemeLib:CreateWindow(options)
         return Utils.Notify(title, message, notificationType, duration)
     end
     
-    -- Show startup notification
-    Utils.Notify("Red Theme GUI", "Professional GUI Library Loaded Successfully", "success", 3)
-    
     return windowData
 end
 
--- ═══════════════════════════════════════════════════════════════════════════════════════════
--- EXPORT LIBRARY
--- ═══════════════════════════════════════════════════════════════════════════════════════════
-
-print("[RED-THEME] GUI Library Loaded Successfully!")
-print("[RED-THEME] Ready for use")
+print("[RED-THEME] Blocky GUI Library Loaded Successfully!")
 
 -- Make library global
 getgenv().RedThemeLib = RedThemeLib
