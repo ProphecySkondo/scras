@@ -36,7 +36,7 @@ G2L["1"]["ResetOnSpawn"] = false
 
 -- StarterGui.HydroxideRedThemeGUI.Main
 G2L["2"] = Instance.new("Frame", G2L["1"])
-G2L["2"]["BackgroundColor3"] = Color3.fromRGB(25, 25, 35)
+G2L["2"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
 G2L["2"]["Size"] = UDim2.new(0, 650, 0, 450)
 G2L["2"]["Position"] = UDim2.new(0.5, -325, 0.5, -225)
 G2L["2"]["BorderColor3"] = Color3.fromRGB(220, 50, 60)
@@ -49,7 +49,7 @@ G2L["2a"]["CornerRadius"] = UDim.new(0, 8)
 
 -- StarterGui.HydroxideRedThemeGUI.Main.TopBar
 G2L["3"] = Instance.new("Frame", G2L["2"])
-G2L["3"]["BackgroundColor3"] = Color3.fromRGB(20, 20, 30)
+G2L["3"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
 G2L["3"]["Size"] = UDim2.new(1, 0, 0, 32)
 G2L["3"]["Position"] = UDim2.new(0, 0, 0, 0)
 G2L["3"]["BorderColor3"] = Color3.fromRGB(220, 50, 60)
@@ -99,7 +99,7 @@ G2L["5a"]["CornerRadius"] = UDim.new(0, 6)
 
 -- StarterGui.HydroxideRedThemeGUI.Main.Sidebar
 G2L["6"] = Instance.new("Frame", G2L["2"])
-G2L["6"]["BackgroundColor3"] = Color3.fromRGB(18, 18, 28)
+G2L["6"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
 G2L["6"]["Size"] = UDim2.new(0, 160, 1, -32)
 G2L["6"]["Position"] = UDim2.new(0, 0, 0, 32)
 G2L["6"]["BorderColor3"] = Color3.fromRGB(220, 50, 60)
@@ -124,7 +124,7 @@ G2L["6c"]["Padding"] = UDim.new(0, 4)
 
 -- StarterGui.HydroxideRedThemeGUI.Main.Content
 G2L["7"] = Instance.new("ScrollingFrame", G2L["2"])
-G2L["7"]["BackgroundColor3"] = Color3.fromRGB(30, 30, 40)
+G2L["7"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
 G2L["7"]["Size"] = UDim2.new(1, -168, 1, -40)
 G2L["7"]["Position"] = UDim2.new(0, 164, 0, 36)
 G2L["7"]["BorderColor3"] = Color3.fromRGB(220, 50, 60)
@@ -185,11 +185,11 @@ G2L["15"]["Name"] = "ToggleScript"
 G2L["16"] = Instance.new("LocalScript", G2L["1"])
 G2L["16"]["Name"] = "NotificationScript"
 
--- Venyx Red Theme Configuration
+-- 100% Black Red Theme Configuration
 local Theme = {
-    Background = Color3.fromRGB(30, 30, 40),
-    Sidebar = Color3.fromRGB(18, 18, 28),
-    SidebarInactive = Color3.fromRGB(35, 35, 45),
+    Background = Color3.fromRGB(0, 0, 0),
+    Sidebar = Color3.fromRGB(0, 0, 0),
+    SidebarInactive = Color3.fromRGB(0, 0, 0),
     Primary = Color3.fromRGB(220, 50, 60),
     Secondary = Color3.fromRGB(240, 70, 80),
     Text = Color3.fromRGB(255, 255, 255),
@@ -261,12 +261,12 @@ function Library:CreateWindow(config)
         type = type or "info"
         
         local notification = Instance.new("Frame")
-        notification.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+        notification.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
         notification.BorderColor3 = Theme[type:gsub("^%l", string.upper)] or Theme.Primary
         notification.BorderSizePixel = 2
         notification.Size = UDim2.new(1, 0, 0, 80)
         notification.Parent = G2L["10"]
-        notification.BackgroundTransparency = 0.05
+        notification.BackgroundTransparency = 0
         
         -- Notification corner rounding
         local notificationCorner = Instance.new("UICorner", notification)
@@ -344,7 +344,7 @@ function Library:CreateWindow(config)
         tabButton.MouseEnter:Connect(function()
             if Window.CurrentTab and Window.CurrentTab.Button ~= tabButton then
                 TweenService:Create(tabButton, TweenInfo.new(0.15), {
-                    BackgroundColor3 = Color3.fromRGB(55, 55, 55)
+                    BackgroundColor3 = Color3.fromRGB(10, 10, 10)
                 }):Play()
             end
         end)
@@ -373,7 +373,7 @@ function Library:CreateWindow(config)
         tabButton.MouseButton1Click:Connect(function()
             if Window.CurrentTab then
                 Window.CurrentTab.Content.Visible = false
-                Window.CurrentTab.Button.BackgroundColor3 = Theme.Sidebar
+                Window.CurrentTab.Button.BackgroundColor3 = Theme.SidebarInactive
             end
             
             tabContent.Visible = true
@@ -451,7 +451,7 @@ function Library:CreateWindow(config)
         
         function Tab:CreateToggle(config)
             local toggleFrame = Instance.new("Frame")
-            toggleFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+            toggleFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
             toggleFrame.BorderColor3 = Theme.Border
             toggleFrame.BorderSizePixel = 1
             toggleFrame.Size = UDim2.new(1, 0, 0, 35)
@@ -473,7 +473,7 @@ function Library:CreateWindow(config)
             toggleLabel.Parent = toggleFrame
             
             local toggleButton = Instance.new("TextButton")
-            toggleButton.BackgroundColor3 = config.Default and Theme.Primary or Color3.fromRGB(100, 100, 100)
+            toggleButton.BackgroundColor3 = config.Default and Theme.Primary or Color3.fromRGB(20, 20, 20)
             toggleButton.BorderSizePixel = 0
             toggleButton.Size = UDim2.new(0, 30, 0, 20)
             toggleButton.Position = UDim2.new(1, -40, 0.5, -10)
@@ -488,7 +488,7 @@ function Library:CreateWindow(config)
             
             toggleButton.MouseButton1Click:Connect(function()
                 toggleState = not toggleState
-                local newColor = toggleState and Theme.Primary or Color3.fromRGB(100, 100, 100)
+                local newColor = toggleState and Theme.Primary or Color3.fromRGB(20, 20, 20)
                 TweenService:Create(toggleButton, TweenInfo.new(0.2), {BackgroundColor3 = newColor}):Play()
                 
                 if config.Callback then
@@ -505,7 +505,7 @@ function Library:CreateWindow(config)
         
         function Tab:CreateSlider(config)
             local sliderFrame = Instance.new("Frame")
-            sliderFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+            sliderFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
             sliderFrame.BorderColor3 = Theme.Border
             sliderFrame.BorderSizePixel = 1
             sliderFrame.Size = UDim2.new(1, 0, 0, 50)
@@ -527,7 +527,7 @@ function Library:CreateWindow(config)
             sliderLabel.Parent = sliderFrame
             
             local sliderTrack = Instance.new("Frame")
-            sliderTrack.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+            sliderTrack.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
             sliderTrack.BorderSizePixel = 0
             sliderTrack.Size = UDim2.new(1, -20, 0, 6)
             sliderTrack.Position = UDim2.new(0, 10, 0, 30)
@@ -596,7 +596,7 @@ function Library:CreateWindow(config)
         
         function Tab:CreateKeybind(config)
             local keybindFrame = Instance.new("Frame")
-            keybindFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+            keybindFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
             keybindFrame.BorderColor3 = Theme.Border
             keybindFrame.BorderSizePixel = 1
             keybindFrame.Size = UDim2.new(1, 0, 0, 35)
