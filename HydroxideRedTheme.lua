@@ -82,6 +82,7 @@ G2L["5"]["TextWrapped"] = true
 G2L["5"]["BorderSizePixel"] = 1
 G2L["5"]["TextSize"] = 14
 G2L["5"]["TextScaled"] = false
+G2L["5"]["BackgroundTransparency"] = 0.3
 G2L["5"]["BackgroundColor3"] = Color3.fromRGB(60, 60, 60)
 G2L["5"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 G2L["5"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
@@ -159,7 +160,7 @@ G2L["10"]["Name"] = "Notifications"
 G2L["11"] = Instance.new("UIListLayout", G2L["10"])
 G2L["11"]["Padding"] = UDim.new(0, 10)
 G2L["11"]["SortOrder"] = Enum.SortOrder.LayoutOrder
-G2L["11"]["VerticalAlignment"] = Enum.VerticalAlignment.Bottom
+G2L["11"]["VerticalAlignment"] = Enum.VerticalAlignment.Top
 
 -- StarterGui.HydroxideRedThemeGUI.Assets
 G2L["12"] = Instance.new("ModuleScript", G2L["1"])
@@ -262,6 +263,10 @@ function Library:CreateWindow(config)
         notification.Size = UDim2.new(1, 0, 0, 80)
         notification.Parent = G2L["10"]
         notification.BackgroundTransparency = 0.1
+        
+        -- Notification corner rounding
+        local notificationCorner = Instance.new("UICorner", notification)
+        notificationCorner.CornerRadius = UDim.new(0, 6)
         
         local titleLabel = Instance.new("TextLabel")
         titleLabel.BackgroundTransparency = 1
@@ -445,6 +450,10 @@ function Library:CreateWindow(config)
             toggleFrame.Size = UDim2.new(1, 0, 0, 35)
             toggleFrame.Parent = tabContent
             
+            -- Toggle frame corner rounding
+            local toggleFrameCorner = Instance.new("UICorner", toggleFrame)
+            toggleFrameCorner.CornerRadius = UDim.new(0, 6)
+            
             local toggleLabel = Instance.new("TextLabel")
             toggleLabel.BackgroundTransparency = 1
             toggleLabel.Size = UDim2.new(1, -50, 1, 0)
@@ -463,6 +472,10 @@ function Library:CreateWindow(config)
             toggleButton.Position = UDim2.new(1, -40, 0.5, -10)
             toggleButton.Text = ""
             toggleButton.Parent = toggleFrame
+            
+            -- Toggle button corner rounding
+            local toggleButtonCorner = Instance.new("UICorner", toggleButton)
+            toggleButtonCorner.CornerRadius = UDim.new(0, 4)
             
             local toggleState = config.Default or false
             
@@ -489,6 +502,10 @@ function Library:CreateWindow(config)
             sliderFrame.BorderSizePixel = 0
             sliderFrame.Size = UDim2.new(1, 0, 0, 50)
             sliderFrame.Parent = tabContent
+            
+            -- Slider frame corner rounding
+            local sliderFrameCorner = Instance.new("UICorner", sliderFrame)
+            sliderFrameCorner.CornerRadius = UDim.new(0, 6)
             
             local sliderLabel = Instance.new("TextLabel")
             sliderLabel.BackgroundTransparency = 1
@@ -576,6 +593,10 @@ function Library:CreateWindow(config)
             keybindFrame.Size = UDim2.new(1, 0, 0, 35)
             keybindFrame.Parent = tabContent
             
+            -- Keybind frame corner rounding
+            local keybindFrameCorner = Instance.new("UICorner", keybindFrame)
+            keybindFrameCorner.CornerRadius = UDim.new(0, 6)
+            
             local keybindLabel = Instance.new("TextLabel")
             keybindLabel.BackgroundTransparency = 1
             keybindLabel.Size = UDim2.new(1, -80, 1, 0)
@@ -597,6 +618,10 @@ function Library:CreateWindow(config)
             keybindButton.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
             keybindButton.TextSize = 12
             keybindButton.Parent = keybindFrame
+            
+            -- Keybind button corner rounding
+            local keybindButtonCorner = Instance.new("UICorner", keybindButton)
+            keybindButtonCorner.CornerRadius = UDim.new(0, 4)
             
             local currentKey = config.Default or "None"
             local listening = false
