@@ -1,14 +1,13 @@
 --[=[
-    db   db db    db d8888b. d8888b.  .d88b.  db    db d888888b d8888b. d88888b      d8888b. d88888b d8888b.      d888888b db   db d88888b .88b  d88. d88888b 
-    88   88 `8b  d8' 88  `8D 88  `8D .8P  Y8. `8b  d8'   `88'   88  `8D 88'          88  `8D 88'     88  `8D        `88'   88   88 88'     88'YbdP`88 88'     
-    88ooo88  `8bd8'  88   88 88oobY' 88    88  `8bd8'     88    88   88 88ooooo      88oobY' 88ooooo 88   88         88    88ooo88 88ooooo 88  88  88 88ooooo 
-    88~~~88    88    88   88 88`8b   88    88  d8`8b      88    88   88 88~~~~~      88`8b   88~~~~~ 88   88         88    88~~~88 88~~~~~ 88  88  88 88~~~~~ 
-    88   88    88    88  .8D 88 `88. `8b  d8' d8' `8b    .88.   88  .8D 88.          88 `88. 88.     88  .8D        .88.   88   88 88.     88  88  88 88.     
-    YP   YP    YP    Y8888D' 88   YD  `Y88P'  Y8   Y8    Y888P  Y8888D' Y88888P      88   YD Y88888P Y8888D'        Y888P  YP   YP Y88888P YP  YP  YP Y88888P 
-                                                                                                                                                @uniquadev
+ d888b  db    db d888888b      .d888b.      db      db    db  .d8b.  
+88' Y8b 88    88   `88'        VP  `8D      88      88    88 d8' `8b 
+88      88    88    88            odD'      88      88    88 88ooo88 
+88  ooo 88    88    88          .88'        88      88    88 88~~~88 
+88. ~8~ 88b  d88   .88.        j88.         88booo. 88b  d88 88   88    @uniquadev
+ Y888P  ~Y8888P' Y888888P      888888D      Y88888P ~Y8888P' YP   YP  PROFESSIONAL
 ]=]
 
--- Instances: 25 | Scripts: 8 | Modules: 3 | Tags: 0
+-- Instances: 32 | Scripts: 6 | Modules: 2 | Tags: 0
 local G2L = {}
 local Library = {}
 
@@ -22,6 +21,13 @@ local RunService = game:GetService("RunService")
 local Player = Players.LocalPlayer
 local PlayerGui = Player:WaitForChild("PlayerGui")
 
+-- Clean existing GUIs
+for _, gui in pairs(PlayerGui:GetChildren()) do
+    if gui.Name == "ProfessionalGUI" then
+        gui:Destroy()
+    end
+end
+
 -- StarterGui.HydroxideRedThemeGUI
 G2L["1"] = Instance.new("ScreenGui", PlayerGui)
 G2L["1"]["Name"] = "HydroxideRedThemeGUI"
@@ -30,20 +36,28 @@ G2L["1"]["ResetOnSpawn"] = false
 
 -- StarterGui.HydroxideRedThemeGUI.Main
 G2L["2"] = Instance.new("Frame", G2L["1"])
-G2L["2"]["BackgroundColor3"] = Color3.fromRGB(30, 30, 30)
-G2L["2"]["Size"] = UDim2.new(0, 600, 0, 400)
-G2L["2"]["Position"] = UDim2.new(0.5, -300, 0.5, -200)
-G2L["2"]["BorderColor3"] = Color3.fromRGB(255, 0, 0)
+G2L["2"]["BackgroundColor3"] = Color3.fromRGB(50, 50, 50)
+G2L["2"]["Size"] = UDim2.new(0, 650, 0, 450)
+G2L["2"]["Position"] = UDim2.new(0.5, -325, 0.5, -225)
+G2L["2"]["BorderColor3"] = Color3.fromRGB(70, 70, 70)
 G2L["2"]["BorderSizePixel"] = 1
 G2L["2"]["Name"] = "Main"
 
+-- Main corner rounding
+G2L["2a"] = Instance.new("UICorner", G2L["2"])
+G2L["2a"]["CornerRadius"] = UDim.new(0, 8)
+
 -- StarterGui.HydroxideRedThemeGUI.Main.TopBar
 G2L["3"] = Instance.new("Frame", G2L["2"])
-G2L["3"]["BackgroundColor3"] = Color3.fromRGB(45, 25, 25)
-G2L["3"]["Size"] = UDim2.new(1, 0, 0, 30)
+G2L["3"]["BackgroundColor3"] = Color3.fromRGB(42, 42, 42)
+G2L["3"]["Size"] = UDim2.new(1, 0, 0, 32)
 G2L["3"]["Position"] = UDim2.new(0, 0, 0, 0)
 G2L["3"]["BorderSizePixel"] = 0
 G2L["3"]["Name"] = "TopBar"
+
+-- TopBar corner rounding
+G2L["3a"] = Instance.new("UICorner", G2L["3"])
+G2L["3a"]["CornerRadius"] = UDim.new(0, 8)
 
 -- StarterGui.HydroxideRedThemeGUI.Main.TopBar.Title
 G2L["4"] = Instance.new("TextLabel", G2L["3"])
@@ -79,22 +93,43 @@ G2L["5"]["Position"] = UDim2.new(1, -50, 0, 0)
 
 -- StarterGui.HydroxideRedThemeGUI.Main.Sidebar
 G2L["6"] = Instance.new("Frame", G2L["2"])
-G2L["6"]["BackgroundColor3"] = Color3.fromRGB(45, 25, 25)
-G2L["6"]["Size"] = UDim2.new(0, 150, 1, -30)
-G2L["6"]["Position"] = UDim2.new(0, 0, 0, 30)
+G2L["6"]["BackgroundColor3"] = Color3.fromRGB(38, 38, 38)
+G2L["6"]["Size"] = UDim2.new(0, 160, 1, -32)
+G2L["6"]["Position"] = UDim2.new(0, 0, 0, 32)
 G2L["6"]["BorderSizePixel"] = 0
 G2L["6"]["Name"] = "Sidebar"
 
+-- Sidebar corner rounding
+G2L["6a"] = Instance.new("UICorner", G2L["6"])
+G2L["6a"]["CornerRadius"] = UDim.new(0, 8)
+
+-- Sidebar padding
+G2L["6b"] = Instance.new("UIPadding", G2L["6"])
+G2L["6b"]["PaddingTop"] = UDim.new(0, 8)
+G2L["6b"]["PaddingLeft"] = UDim.new(0, 8)
+G2L["6b"]["PaddingRight"] = UDim.new(0, 8)
+G2L["6b"]["PaddingBottom"] = UDim.new(0, 8)
+
+-- Sidebar layout
+G2L["6c"] = Instance.new("UIListLayout", G2L["6"])
+G2L["6c"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+G2L["6c"]["Padding"] = UDim.new(0, 4)
+
 -- StarterGui.HydroxideRedThemeGUI.Main.Content
 G2L["7"] = Instance.new("ScrollingFrame", G2L["2"])
-G2L["7"]["BackgroundColor3"] = Color3.fromRGB(30, 30, 30)
-G2L["7"]["Size"] = UDim2.new(1, -150, 1, -30)
-G2L["7"]["Position"] = UDim2.new(0, 150, 0, 30)
+G2L["7"]["BackgroundColor3"] = Color3.fromRGB(58, 58, 58)
+G2L["7"]["Size"] = UDim2.new(1, -168, 1, -40)
+G2L["7"]["Position"] = UDim2.new(0, 164, 0, 36)
 G2L["7"]["BorderSizePixel"] = 0
 G2L["7"]["Name"] = "Content"
-G2L["7"]["ScrollBarThickness"] = 6
-G2L["7"]["ScrollBarImageColor3"] = Color3.fromRGB(255, 50, 50)
+G2L["7"]["ScrollBarThickness"] = 4
+G2L["7"]["ScrollBarImageColor3"] = Color3.fromRGB(120, 120, 120)
 G2L["7"]["CanvasSize"] = UDim2.new(0, 0, 0, 0)
+G2L["7"]["ScrollingDirection"] = Enum.ScrollingDirection.Y
+
+-- Content corner rounding
+G2L["7a"] = Instance.new("UICorner", G2L["7"])
+G2L["7a"]["CornerRadius"] = UDim.new(0, 8)
 
 -- StarterGui.HydroxideRedThemeGUI.Main.Content.UIListLayout
 G2L["8"] = Instance.new("UIListLayout", G2L["7"])
@@ -142,19 +177,20 @@ G2L["15"]["Name"] = "ToggleScript"
 G2L["16"] = Instance.new("LocalScript", G2L["1"])
 G2L["16"]["Name"] = "NotificationScript"
 
--- Theme Configuration
+-- Clean Gray Theme Configuration
 local Theme = {
-    Background = Color3.fromRGB(30, 30, 30),
-    Sidebar = Color3.fromRGB(45, 25, 25),
-    Primary = Color3.fromRGB(255, 50, 50),
-    Secondary = Color3.fromRGB(200, 40, 40),
+    Background = Color3.fromRGB(58, 58, 58),
+    Sidebar = Color3.fromRGB(38, 38, 38),
+    SidebarInactive = Color3.fromRGB(48, 48, 48),
+    Primary = Color3.fromRGB(65, 105, 225),
+    Secondary = Color3.fromRGB(85, 125, 245),
     Text = Color3.fromRGB(255, 255, 255),
-    TextDark = Color3.fromRGB(200, 200, 200),
-    Border = Color3.fromRGB(255, 0, 0),
-    Success = Color3.fromRGB(0, 255, 0),
-    Warning = Color3.fromRGB(255, 165, 0),
-    Error = Color3.fromRGB(255, 0, 0),
-    Info = Color3.fromRGB(100, 150, 255)
+    TextDark = Color3.fromRGB(180, 180, 180),
+    Border = Color3.fromRGB(70, 70, 70),
+    Success = Color3.fromRGB(72, 187, 120),
+    Warning = Color3.fromRGB(245, 158, 11),
+    Error = Color3.fromRGB(239, 68, 68),
+    Info = Color3.fromRGB(59, 130, 246)
 }
 
 -- Require G2L wrapper
@@ -277,14 +313,35 @@ function Library:CreateWindow(config)
         
         -- Create tab button
         local tabButton = Instance.new("TextButton")
-        tabButton.BackgroundColor3 = Theme.Sidebar
+        tabButton.BackgroundColor3 = Theme.SidebarInactive
         tabButton.BorderSizePixel = 0
-        tabButton.Size = UDim2.new(1, 0, 0, 40)
+        tabButton.Size = UDim2.new(1, 0, 0, 36)
         tabButton.Text = Tab.Name
-        tabButton.TextColor3 = Theme.Text
+        tabButton.TextColor3 = Theme.TextDark
         tabButton.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-        tabButton.TextSize = 14
+        tabButton.TextSize = 13
         tabButton.Parent = G2L["6"]
+        
+        -- Tab button corner rounding
+        local tabCorner = Instance.new("UICorner", tabButton)
+        tabCorner.CornerRadius = UDim.new(0, 6)
+        
+        -- Tab button hover effects
+        tabButton.MouseEnter:Connect(function()
+            if Window.CurrentTab and Window.CurrentTab.Button ~= tabButton then
+                TweenService:Create(tabButton, TweenInfo.new(0.15), {
+                    BackgroundColor3 = Color3.fromRGB(55, 55, 55)
+                }):Play()
+            end
+        end)
+        
+        tabButton.MouseLeave:Connect(function()
+            if Window.CurrentTab and Window.CurrentTab.Button ~= tabButton then
+                TweenService:Create(tabButton, TweenInfo.new(0.15), {
+                    BackgroundColor3 = Theme.SidebarInactive
+                }):Play()
+            end
+        end)
         
         -- Tab content frame
         local tabContent = Instance.new("Frame")
@@ -351,13 +408,17 @@ function Library:CreateWindow(config)
             button.TextSize = 14
             button.Parent = tabContent
             
+            -- Button corner rounding
+            local buttonCorner = Instance.new("UICorner", button)
+            buttonCorner.CornerRadius = UDim.new(0, 6)
+            
             -- Hover effects
             button.MouseEnter:Connect(function()
-                TweenService:Create(button, TweenInfo.new(0.2), {BackgroundColor3 = Theme.Secondary}):Play()
+                TweenService:Create(button, TweenInfo.new(0.15), {BackgroundColor3 = Theme.Secondary}):Play()
             end)
             
             button.MouseLeave:Connect(function()
-                TweenService:Create(button, TweenInfo.new(0.2), {BackgroundColor3 = Theme.Primary}):Play()
+                TweenService:Create(button, TweenInfo.new(0.15), {BackgroundColor3 = Theme.Primary}):Play()
             end)
             
             button.MouseButton1Click:Connect(function()
