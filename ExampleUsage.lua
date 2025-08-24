@@ -1,277 +1,111 @@
--- Example Usage of Hydroxide Hub V2.0
--- This file demonstrates how to use the enhanced library
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/ProphecySkondo/scras/main/NovaHydroxide.lua"))()
 
--- Load the library
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/YourRepo/HydroxideHubV2.lua"))() 
--- Or use: local Library = require(script.HydroxideHubV2)
+-- Create Window
+local Window = Library:Window("Nova Hydroxide Hub")
 
--- Create the main window
-local Window = Library:CreateWindow({
-    Title = "🚀 Hydroxide Hub V2.0 - Professional"
-})
+-- Show notification
+Window:Notification("Welcome!", "Nova Hydroxide has been loaded successfully!", "Success", 5)
 
--- Create tabs
-local MainTab = Window:CreateTab({
-    Name = "Main",
-    Icon = "⚡"
-})
+-- Create Main Tab
+local MainTab = Window:Tab("Main", "rbxassetid://7743878358")
 
-local PlayerTab = Window:CreateTab({
-    Name = "Player", 
-    Icon = "👤"
-})
+-- Add elements to Main Tab
+MainTab:Section("Player Features")
 
-local VisualTab = Window:CreateTab({
-    Name = "Visual",
-    Icon = "🎨"
-})
-
-local MiscTab = Window:CreateTab({
-    Name = "Misc",
-    Icon = "🔧"
-})
-
--- Main Tab Content
-MainTab:AddSection("🎯 Main Features")
-
-MainTab:AddButton({
-    Text = "God Mode",
-    Description = "Makes you invincible to all damage",
-    Callback = function()
-        Window:Notify("God Mode", "God mode activated!", "success")
-        -- Your god mode code here
-        if game.Players.LocalPlayer.Character then
-            game.Players.LocalPlayer.Character.Humanoid.MaxHealth = math.huge
-            game.Players.LocalPlayer.Character.Humanoid.Health = math.huge
-        end
+MainTab:Button("Infinite Jump", "Allows you to jump infinitely in the game", function()
+    getgenv().InfiniteJump = not getgenv().InfiniteJump
+    if getgenv().InfiniteJump then
+        Window:Notification("Activated", "Infinite Jump has been enabled", "Success")
+    else
+        Window:Notification("Deactivated", "Infinite Jump has been disabled", "Info")
     end
-})
-
-MainTab:AddToggle({
-    Text = "Infinite Jump",
-    Description = "Jump as many times as you want",
-    Default = false,
-    Callback = function(state)
-        if state then
-            Window:Notify("Infinite Jump", "Infinite jump enabled!", "success")
-            -- Enable infinite jump
-            _G.InfiniteJump = true
-            game:GetService("UserInputService").JumpRequest:Connect(function()
-                if _G.InfiniteJump and game.Players.LocalPlayer.Character then
-                    game.Players.LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-                end
-            end)
-        else
-            Window:Notify("Infinite Jump", "Infinite jump disabled!", "warning")
-            _G.InfiniteJump = false
-        end
-    end
-})
-
-MainTab:AddSeparator()
-
-MainTab:AddSlider({
-    Text = "Walk Speed",
-    Description = "Change your walking speed",
-    Min = 16,
-    Max = 200,
-    Default = 16,
-    Callback = function(value)
-        if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character.Humanoid then
-            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
-        end
-    end
-})
-
-MainTab:AddSlider({
-    Text = "Jump Power",
-    Description = "Change your jump height",
-    Min = 50,
-    Max = 500,
-    Default = 50,
-    Callback = function(value)
-        if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character.Humanoid then
-            game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
-        end
-    end
-})
-
--- Player Tab Content
-PlayerTab:AddSection("👤 Player Controls")
-
-PlayerTab:AddTextbox({
-    Text = "Teleport to Player",
-    Description = "Enter a player's username to teleport to them", 
-    Placeholder = "Username...",
-    Callback = function(text)
-        local targetPlayer = nil
-        for _, player in pairs(game.Players:GetPlayers()) do
-            if string.lower(player.Name):find(string.lower(text)) or string.lower(player.DisplayName):find(string.lower(text)) then
-                targetPlayer = player
-                break
-            end
-        end
-        
-        if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
-            if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = targetPlayer.Character.HumanoidRootPart.CFrame
-                Window:Notify("Teleport", "Teleported to " .. targetPlayer.DisplayName, "success")
-            end
-        else
-            Window:Notify("Teleport", "Player not found!", "error")
-        end
-    end
-})
-
-PlayerTab:AddToggle({
-    Text = "No Clip",
-    Description = "Walk through walls and objects",
-    Default = false,
-    Callback = function(state)
-        _G.NoClip = state
-        if state then
-            Window:Notify("No Clip", "No clip enabled!", "success")
-            game:GetService("RunService").Stepped:Connect(function()
-                if _G.NoClip and game.Players.LocalPlayer.Character then
-                    for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-                        if part:IsA("BasePart") and part.CanCollide then
-                            part.CanCollide = false
-                        end
-                    end
-                end
-            end)
-        else
-            Window:Notify("No Clip", "No clip disabled!", "warning")
-        end
-    end
-})
-
-PlayerTab:AddKeybind({
-    Text = "Respawn Key", 
-    Description = "Press this key to respawn your character",
-    Default = Enum.KeyCode.R,
-    Callback = function()
-        if game.Players.LocalPlayer.Character then
-            game.Players.LocalPlayer.Character.Humanoid.Health = 0
-            Window:Notify("Respawn", "Character respawned!", "info")
-        end
-    end
-})
-
--- Visual Tab Content
-VisualTab:AddSection("🎨 Visual Effects")
-
-VisualTab:AddToggle({
-    Text = "Fullbright",
-    Description = "Makes everything bright and visible",
-    Default = false,
-    Callback = function(state)
-        if state then
-            game.Lighting.Brightness = 2
-            game.Lighting.ClockTime = 14
-            game.Lighting.FogEnd = 100000
-            game.Lighting.GlobalShadows = false
-            game.Lighting.OutdoorAmbient = Color3.fromRGB(128, 128, 128)
-            Window:Notify("Fullbright", "Fullbright enabled!", "success")
-        else
-            game.Lighting.Brightness = 1
-            game.Lighting.ClockTime = 12
-            game.Lighting.FogEnd = 100000
-            game.Lighting.GlobalShadows = true
-            game.Lighting.OutdoorAmbient = Color3.fromRGB(70, 70, 70)
-            Window:Notify("Fullbright", "Fullbright disabled!", "warning")
-        end
-    end
-})
-
-VisualTab:AddSlider({
-    Text = "FOV",
-    Description = "Change your field of view",
-    Min = 70,
-    Max = 120,
-    Default = 70,
-    Callback = function(value)
-        workspace.CurrentCamera.FieldOfView = value
-    end
-})
-
-VisualTab:AddButton({
-    Text = "Remove Fog",
-    Description = "Removes all fog effects for better visibility",
-    Callback = function()
-        game.Lighting.FogEnd = 100000
-        Window:Notify("Remove Fog", "Fog removed!", "success")
-    end
-})
-
--- Misc Tab Content
-MiscTab:AddSection("🔧 Miscellaneous")
-
-MiscTab:AddButton({
-    Text = "Rejoin Server",
-    Description = "Rejoin the current server",
-    Callback = function()
-        Window:Notify("Rejoin", "Rejoining server...", "info")
-        game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
-    end
-})
-
-MiscTab:AddButton({
-    Text = "Copy Game ID",
-    Description = "Copy the current game's place ID",
-    Callback = function()
-        setclipboard(tostring(game.PlaceId))
-        Window:Notify("Copy Game ID", "Game ID copied to clipboard!", "success")
-    end
-})
-
-MiscTab:AddToggle({
-    Text = "Anti AFK",
-    Description = "Prevents you from being kicked for inactivity", 
-    Default = false,
-    Callback = function(state)
-        if state then
-            _G.AntiAFK = true
-            game:GetService("Players").LocalPlayer.Idled:Connect(function()
-                if _G.AntiAFK then
-                    game:GetService("VirtualUser"):MoveMouse(Vector2.new())
-                end
-            end)
-            Window:Notify("Anti AFK", "Anti AFK enabled!", "success")
-        else
-            _G.AntiAFK = false
-            Window:Notify("Anti AFK", "Anti AFK disabled!", "warning")
-        end
-    end
-})
-
-MiscTab:AddSeparator()
-
-MiscTab:AddTextbox({
-    Text = "Chat Message",
-    Description = "Send a message in chat",
-    Placeholder = "Enter message...",
-    Callback = function(text)
-        if text and text ~= "" then
-            game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(text, "All")
-            Window:Notify("Chat", "Message sent!", "success")
-        end
-    end
-})
-
--- Show a welcome notification
-task.spawn(function()
-    task.wait(2)
-    Window:Notify(
-        "🎉 Welcome!", 
-        "Hydroxide Hub V2.0 loaded successfully! All features are ready to use.", 
-        "success", 
-        6
-    )
 end)
 
--- Auto-show the GUI after load
-task.spawn(function()
-    task.wait(0.5)
-    Window:Toggle()
+MainTab:Toggle("Fly", "Enables flight mode for your character", false, function(value)
+    getgenv().Fly = value
+    if value then
+        Window:Notification("Fly Enabled", "You can now fly around the map", "Success")
+    else
+        Window:Notification("Fly Disabled", "Flight mode has been turned off", "Info")
+    end
 end)
+
+MainTab:Slider("WalkSpeed", "Adjust your character's walking speed", 16, 200, 50, function(value)
+    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
+    end
+end)
+
+MainTab:Section("Visuals")
+
+MainTab:Toggle("ESP", "Shows player names through walls", false, function(value)
+    getgenv().ESP = value
+    Window:Notification("ESP " .. (value and "Enabled" or "Disabled"), "Player ESP is now " .. (value and "active" or "inactive"), value and "Success" or "Info")
+end)
+
+MainTab:Toggle("Fullbright", "Makes the game brighter", false, function(value)
+    getgenv().Fullbright = value
+    local lighting = game:GetService("Lighting")
+    
+    if value then
+        lighting.Brightness = 2
+        lighting.ClockTime = 14
+        lighting.FogEnd = 100000
+        lighting.GlobalShadows = false
+        lighting.OutdoorAmbient = Color3.fromRGB(128, 128, 128)
+    else
+        lighting.Brightness = 1
+        lighting.ClockTime = 12
+        lighting.FogEnd = 100000
+        lighting.GlobalShadows = true
+        lighting.OutdoorAmbient = Color3.fromRGB(70, 70, 70)
+    end
+end)
+
+-- Create Combat Tab
+local CombatTab = Window:Tab("Combat", "rbxassetid://7743876142")
+
+CombatTab:Section("Aimbot Settings")
+
+CombatTab:Toggle("Aimbot", "Automatically aims at enemies", false, function(value)
+    getgenv().Aimbot = value
+    Window:Notification("Aimbot " .. (value and "Enabled" or "Disabled"), "Auto-aim is now " .. (value and "active" or "inactive"), value and "Success" or "Info")
+end)
+
+CombatTab:Slider("Aimbot FOV", "Field of view for aimbot targeting", 50, 360, 120, function(value)
+    getgenv().AimbotFOV = value
+end)
+
+CombatTab:Section("Weapon Mods")
+
+CombatTab:Toggle("Infinite Ammo", "Never run out of ammunition", false, function(value)
+    getgenv().InfiniteAmmo = value
+    Window:Notification("Infinite Ammo " .. (value and "Enabled" or "Disabled"), "Ammo modifications are now " .. (value and "active" or "inactive"), value and "Success" or "Info")
+end)
+
+CombatTab:Toggle("No Recoil", "Removes weapon recoil", false, function(value)
+    getgenv().NoRecoil = value
+    Window:Notification("No Recoil " .. (value and "Enabled" or "Disabled"), "Recoil modifications are now " .. (value and "active" or "inactive"), value and "Success" or "Info")
+end)
+
+-- Create Settings Tab
+local SettingsTab = Window:Tab("Settings", "rbxassetid://7743875615")
+
+SettingsTab:Section("UI Settings")
+
+SettingsTab:Button("Destroy GUI", "Removes the interface from screen", function()
+    Window:Notification("Goodbye!", "Thank you for using Nova Hydroxide!", "Info", 3)
+    wait(3)
+    game:GetService("CoreGui").NovaHydroxide:Destroy()
+end)
+
+SettingsTab:Section("About")
+
+SettingsTab:Button("Join Discord", "Opens our Discord server invite", function()
+    setclipboard("https://discord.gg/example")
+    Window:Notification("Discord Link", "Discord invite copied to clipboard!", "Success")
+end)
+
+-- Auto-show the GUI
+wait(1)
+Window:Toggle()

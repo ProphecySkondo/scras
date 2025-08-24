@@ -1,345 +1,192 @@
-# 🚀 Hydroxide Hub V2.0 - Professional Gaming Hub
+# Nova Hydroxide GUI Library
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Lua](https://img.shields.io/badge/Language-Lua-blue.svg)](https://www.lua.org/)
-[![Roblox](https://img.shields.io/badge/Platform-Roblox-red.svg)](https://www.roblox.com/)
+A premium Roblox GUI library inspired by Nova Hub, featuring a fully black theme with elegant red borders and smooth animations. This library provides a professional, clean interface for your Roblox exploiting needs.
 
-> **🎯 A professional, Nova-inspired GUI library for Roblox with enhanced features, sleek animations, and zero exploitative methods.**
+## Features
 
-## ✨ Features
+✨ **Modern Design**
+- Pure black backgrounds with red accent borders
+- Smooth animations and transitions
+- Professional Nova-inspired styling
+- Rounded corners and clean typography
 
-### 🎨 **Visual Excellence**
-- **100% Black Theme** with striking red borders (1-2px)
-- **Professional Animations** with smooth blur effects (8px)
-- **Rounded Corners** throughout (8-12px radius)
-- **Modern UI Elements** with hover effects and transitions
-- **Top-Right Notifications** with fade animations
-- **Draggable Windows** with smooth positioning
+🎮 **Complete Widget Set**
+- Buttons with descriptions
+- Toggle switches with smooth animations
+- Sliders with real-time value updates
+- Section headers for organization
+- Notification system
 
-### ⚡ **Advanced Functionality**
-- **RShift Toggle** for easy GUI access
-- **Smart Auto-Sizing** for content and scrolling areas
-- **Professional Notification System** (success/warning/error/info)
-- **Memory Efficient** with proper cleanup functions
-- **No Hooks/Metamethods** - completely secure and clean
+🔧 **Advanced Functionality**
+- Blur effect when GUI is open
+- Draggable interface
+- Right Shift toggle keybind
+- Sound effects
+- Auto-sizing scrollable content
 
-### 🛠️ **UI Components**
-- ✅ **Buttons** with click animations
-- ✅ **Toggles** with smooth transitions
-- ✅ **Sliders** with real-time value updates
-- ✅ **Textboxes** with focus states
-- ✅ **Keybinds** with listening mode
-- ✅ **Sections** for organization
-- ✅ **Separators** for visual breaks
+## Quick Start
 
-## 📦 Installation
-
-### Method 1: Direct Load (Recommended)
 ```lua
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/ProphecySkondo/scras/main/HydroxideHubV2.lua"))()
+-- Load the library
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/ProphecySkondo/scras/main/NovaHydroxide.lua"))()
+
+-- Create a window
+local Window = Library:Window("My Script Hub")
+
+-- Create a tab
+local MainTab = Window:Tab("Main", "rbxassetid://icon_id")
+
+-- Add elements
+MainTab:Section("Features")
+MainTab:Button("Click Me", "This button does something cool", function()
+    print("Button clicked!")
+end)
+
+MainTab:Toggle("Enable Feature", "Toggles a feature on/off", false, function(value)
+    print("Toggle:", value)
+end)
+
+MainTab:Slider("Speed", "Adjust movement speed", 0, 100, 50, function(value)
+    print("Slider value:", value)
+end)
 ```
 
-### Method 2: Local File
-1. Download `HydroxideHubV2.lua`
-2. Place it in your executor's workspace
-3. Load it using:
+## API Documentation
+
+### Window Creation
+
 ```lua
-local Library = loadstring(readfile("HydroxideHubV2.lua"))()
+local Window = Library:Window(title)
 ```
 
-## 🚀 Quick Start
+Creates a new GUI window with the specified title.
 
-### Basic Window Setup
-```lua
--- Create the main window
-local Window = Library:CreateWindow({
-    Title = "My Awesome Hub"
-})
+**Parameters:**
+- `title` (string): The title displayed in the window header
 
--- Create tabs
-local MainTab = Window:CreateTab({
-    Name = "Main",
-    Icon = "⚡"
-})
-```
-
-### Adding UI Elements
-```lua
--- Add a section
-MainTab:AddSection("🎯 Main Features")
-
--- Add a button
-MainTab:AddButton({
-    Text = "God Mode",
-    Description = "Makes you invincible",
-    Callback = function()
-        -- Your code here
-        print("God mode activated!")
-    end
-})
-
--- Add a toggle
-MainTab:AddToggle({
-    Text = "Infinite Jump",
-    Description = "Jump infinitely",
-    Default = false,
-    Callback = function(state)
-        print("Infinite jump:", state)
-    end
-})
-
--- Add a slider
-MainTab:AddSlider({
-    Text = "Walk Speed",
-    Description = "Change walking speed",
-    Min = 16,
-    Max = 200,
-    Default = 16,
-    Callback = function(value)
-        if game.Players.LocalPlayer.Character then
-            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
-        end
-    end
-})
-```
-
-## 📖 Complete Example
-
-Check out [`ExampleUsage.lua`](ExampleUsage.lua) for a comprehensive implementation with:
-- Multiple tabs (Main, Player, Visual, Misc)
-- All UI components demonstrated
-- Real working features
-- Professional organization
-
-## 🎮 Controls
-
-| Key | Action |
-|-----|--------|
-| **Right Shift** | Toggle GUI |
-| **Drag TopBar** | Move Window |
-| **Close Button (×)** | Close GUI |
-| **Minimize Button (−)** | Hide/Show GUI |
-
-## 🔧 API Reference
+**Returns:**
+- Window object with methods for creating tabs and showing notifications
 
 ### Window Methods
+
+#### Toggle
 ```lua
-Window:CreateTab(config)     -- Create a new tab
-Window:Toggle()              -- Show/hide the GUI
-Window:Notify(title, desc, type, duration)  -- Show notification
+Window:Toggle()
 ```
+Shows/hides the GUI window. Can also be triggered with Right Shift key.
+
+#### Notification
+```lua
+Window:Notification(title, text, type, duration)
+```
+Displays a notification popup.
+
+**Parameters:**
+- `title` (string): Notification title
+- `text` (string): Notification message
+- `type` (string): Notification type ("Info", "Success", "Warning", "Error")
+- `duration` (number): How long to show the notification (seconds)
+
+#### Tab
+```lua
+local Tab = Window:Tab(name, icon)
+```
+Creates a new tab in the window.
+
+**Parameters:**
+- `name` (string): Tab display name
+- `icon` (string): Roblox asset ID for tab icon
+
+**Returns:**
+- Tab object with methods for adding elements
 
 ### Tab Methods
+
+#### Section
 ```lua
-Tab:AddSection(title)        -- Add section header
-Tab:AddSeparator()           -- Add visual separator
-Tab:AddButton(config)        -- Add clickable button
-Tab:AddToggle(config)        -- Add on/off toggle
-Tab:AddSlider(config)        -- Add value slider
-Tab:AddTextbox(config)       -- Add text input
-Tab:AddKeybind(config)       -- Add key binding
+Tab:Section(text)
 ```
+Adds a section header for organizing elements.
 
-### Configuration Objects
+**Parameters:**
+- `text` (string): Section title
 
-#### Button Config
+#### Button
 ```lua
-{
-    Text = "Button Name",
-    Description = "What this button does",
-    Callback = function() 
-        -- Your code here
-    end
-}
+Tab:Button(text, desc, callback)
 ```
+Adds a clickable button.
 
-#### Toggle Config
+**Parameters:**
+- `text` (string): Button label
+- `desc` (string): Button description
+- `callback` (function): Function to execute when clicked
+
+#### Toggle
 ```lua
-{
-    Text = "Toggle Name",
-    Description = "What this toggle controls",
-    Default = false,
-    Callback = function(state)
-        -- state is true/false
-    end
-}
+Tab:Toggle(text, desc, default, callback)
 ```
+Adds a toggle switch.
 
-#### Slider Config
+**Parameters:**
+- `text` (string): Toggle label
+- `desc` (string): Toggle description
+- `default` (boolean): Initial state
+- `callback` (function): Function called with new state
+
+#### Slider
 ```lua
-{
-    Text = "Slider Name",
-    Description = "What this controls",
-    Min = 0,
-    Max = 100,
-    Default = 50,
-    Callback = function(value)
-        -- value is the selected number
-    end
-}
+Tab:Slider(text, desc, min, max, default, callback)
 ```
+Adds a value slider.
 
-#### Textbox Config
-```lua
-{
-    Text = "Textbox Name",
-    Description = "What to enter",
-    Placeholder = "Enter text...",
-    Callback = function(text)
-        -- text is what was entered
-    end
-}
-```
+**Parameters:**
+- `text` (string): Slider label
+- `desc` (string): Slider description
+- `min` (number): Minimum value
+- `max` (number): Maximum value
+- `default` (number): Initial value
+- `callback` (function): Function called with new value
 
-#### Keybind Config
-```lua
-{
-    Text = "Keybind Name",
-    Description = "What this key does",
-    Default = Enum.KeyCode.F,
-    Callback = function()
-        -- Triggered when key is pressed
-    end
-}
-```
+## Styling
 
-## 🎨 Theme Customization
+The library uses a consistent color scheme:
 
-The theme can be customized by modifying the `Theme` table:
+- **Primary Background**: RGB(0, 0, 0) - Pure black
+- **Secondary Background**: RGB(24, 24, 24) - Dark gray
+- **Border Color**: RGB(220, 50, 60) - Red accent
+- **Active Color**: RGB(78, 0, 121) - Purple accent
+- **Text Color**: RGB(255, 255, 255) - White
+- **Description Text**: RGB(138, 138, 138) - Gray
 
-```lua
-local Theme = {
-    -- Main Colors
-    Background = Color3.fromRGB(0, 0, 0),
-    Sidebar = Color3.fromRGB(0, 0, 0),
-    Content = Color3.fromRGB(0, 0, 0),
-    
-    -- Accent Colors  
-    Primary = Color3.fromRGB(220, 50, 60),
-    Secondary = Color3.fromRGB(240, 70, 80),
-    
-    -- Text Colors
-    Text = Color3.fromRGB(255, 255, 255),
-    TextDark = Color3.fromRGB(180, 180, 180),
-    
-    -- Status Colors
-    Success = Color3.fromRGB(72, 187, 120),
-    Warning = Color3.fromRGB(245, 158, 11),
-    Error = Color3.fromRGB(239, 68, 68),
-    Info = Color3.fromRGB(59, 130, 246)
-}
-```
+## Controls
 
-## 🔍 Notifications
+- **Right Shift**: Toggle GUI visibility
+- **Mouse Drag**: Move the window around
+- **Scroll Wheel**: Navigate through tab content
 
-Show different types of notifications:
+## Example Usage
 
-```lua
--- Success notification (green)
-Window:Notify("Success", "Operation completed!", "success", 3)
+Check out `ExampleUsage.lua` for a complete example showing all available features and how to implement common scripting functionalities.
 
--- Warning notification (yellow) 
-Window:Notify("Warning", "Be careful!", "warning", 4)
+## Requirements
 
--- Error notification (red)
-Window:Notify("Error", "Something went wrong!", "error", 5)
+- Roblox exploit with `loadstring` and `HttpGet` support
+- Modern executor with CoreGui access
 
--- Info notification (blue)
-Window:Notify("Info", "Useful information", "info", 3)
-```
+## Contributing
 
-## 💡 Best Practices
+This library is designed to be clean, professional, and hook-free. When contributing:
 
-### 🎯 Organization
-- Use **sections** to group related features
-- Add **separators** between different feature groups
-- Use descriptive names and descriptions
-- Organize tabs logically (Main, Player, Visual, Misc, etc.)
+1. Maintain the Nova-inspired styling
+2. No exploitative hooks or metamethods
+3. Clean, readable code with proper documentation
+4. Consistent color scheme and animations
 
-### 🔧 Performance
-- Avoid creating too many GUI elements at once
-- Use callbacks efficiently (don't spam operations)
-- Clean up connections when not needed
-- Test with different screen resolutions
+## License
 
-### 🎨 User Experience
-- Provide clear descriptions for all elements
-- Use appropriate default values
-- Give immediate feedback through notifications
-- Keep the interface intuitive and clean
-
-## 🆚 Comparison with Other Libraries
-
-| Feature | Hydroxide V2 | Nova Hub | Venyx |
-|---------|-------------|----------|-------|
-| **Security** | ✅ No hooks | ❌ Uses hooks | ✅ Clean |
-| **Animations** | ✅ Advanced | ⚠️ Basic | ✅ Good |
-| **Theme** | ✅ Professional | ⚠️ Outdated | ✅ Modern |
-| **Documentation** | ✅ Complete | ❌ Limited | ⚠️ Basic |
-| **Customization** | ✅ Extensive | ❌ Limited | ⚠️ Moderate |
-| **Performance** | ✅ Optimized | ⚠️ Heavy | ✅ Good |
-
-## 🛠️ Troubleshooting
-
-### Common Issues
-
-**GUI doesn't appear:**
-- Make sure you're using the correct load method
-- Check that the script executed without errors
-- Try pressing Right Shift to toggle
-
-**Elements not working:**
-- Verify your callback functions are correct
-- Check the console for error messages
-- Ensure you're using the right parameter names
-
-**Performance issues:**
-- Reduce the number of simultaneous operations
-- Avoid creating too many elements
-- Check for infinite loops in callbacks
-
-### Support
-
-If you encounter issues:
-1. Check the console for error messages
-2. Verify your implementation against the examples
-3. Make sure you're using the latest version
-4. Test in a clean environment
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to:
-- Report bugs
-- Suggest features
-- Submit pull requests
-- Improve documentation
-
-## 🎉 Credits
-
-- **Inspired by**: Nova Hub (improved and enhanced)
-- **Design Elements**: Venyx UI Library
-- **Created by**: @uniquadev
-- **Enhanced for**: Professional gaming environments
+This project is open source. Feel free to use, modify, and distribute as needed.
 
 ---
 
-### 🌟 **Ready to create amazing GUIs? Get started with Hydroxide Hub V2.0 today!**
-
-```lua
--- Quick start - Copy and paste this to get started immediately!
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/ProphecySkondo/scras/main/HydroxideHubV2.lua"))()
-local Window = Library:CreateWindow({Title = "My Hub"})
-local Tab = Window:CreateTab({Name = "Main", Icon = "⚡"})
-
-Tab:AddButton({
-    Text = "Hello World", 
-    Description = "Click me!",
-    Callback = function()
-        Window:Notify("Hello", "Welcome to Hydroxide Hub V2.0!", "success")
-    end
-})
-```
+**Created with ❤️ for the Roblox exploiting community**
