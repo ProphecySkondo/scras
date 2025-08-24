@@ -36,11 +36,11 @@ G2L["1"]["ResetOnSpawn"] = false
 
 -- StarterGui.HydroxideRedThemeGUI.Main
 G2L["2"] = Instance.new("Frame", G2L["1"])
-G2L["2"]["BackgroundColor3"] = Color3.fromRGB(50, 50, 50)
+G2L["2"]["BackgroundColor3"] = Color3.fromRGB(25, 25, 35)
 G2L["2"]["Size"] = UDim2.new(0, 650, 0, 450)
 G2L["2"]["Position"] = UDim2.new(0.5, -325, 0.5, -225)
-G2L["2"]["BorderColor3"] = Color3.fromRGB(70, 70, 70)
-G2L["2"]["BorderSizePixel"] = 1
+G2L["2"]["BorderColor3"] = Color3.fromRGB(220, 50, 60)
+G2L["2"]["BorderSizePixel"] = 2
 G2L["2"]["Name"] = "Main"
 
 -- Main corner rounding
@@ -49,10 +49,11 @@ G2L["2a"]["CornerRadius"] = UDim.new(0, 8)
 
 -- StarterGui.HydroxideRedThemeGUI.Main.TopBar
 G2L["3"] = Instance.new("Frame", G2L["2"])
-G2L["3"]["BackgroundColor3"] = Color3.fromRGB(42, 42, 42)
+G2L["3"]["BackgroundColor3"] = Color3.fromRGB(20, 20, 30)
 G2L["3"]["Size"] = UDim2.new(1, 0, 0, 32)
 G2L["3"]["Position"] = UDim2.new(0, 0, 0, 0)
-G2L["3"]["BorderSizePixel"] = 0
+G2L["3"]["BorderColor3"] = Color3.fromRGB(220, 50, 60)
+G2L["3"]["BorderSizePixel"] = 1
 G2L["3"]["Name"] = "TopBar"
 
 -- TopBar corner rounding
@@ -98,10 +99,11 @@ G2L["5a"]["CornerRadius"] = UDim.new(0, 6)
 
 -- StarterGui.HydroxideRedThemeGUI.Main.Sidebar
 G2L["6"] = Instance.new("Frame", G2L["2"])
-G2L["6"]["BackgroundColor3"] = Color3.fromRGB(38, 38, 38)
+G2L["6"]["BackgroundColor3"] = Color3.fromRGB(18, 18, 28)
 G2L["6"]["Size"] = UDim2.new(0, 160, 1, -32)
 G2L["6"]["Position"] = UDim2.new(0, 0, 0, 32)
-G2L["6"]["BorderSizePixel"] = 0
+G2L["6"]["BorderColor3"] = Color3.fromRGB(220, 50, 60)
+G2L["6"]["BorderSizePixel"] = 1
 G2L["6"]["Name"] = "Sidebar"
 
 -- Sidebar corner rounding
@@ -122,13 +124,14 @@ G2L["6c"]["Padding"] = UDim.new(0, 4)
 
 -- StarterGui.HydroxideRedThemeGUI.Main.Content
 G2L["7"] = Instance.new("ScrollingFrame", G2L["2"])
-G2L["7"]["BackgroundColor3"] = Color3.fromRGB(58, 58, 58)
+G2L["7"]["BackgroundColor3"] = Color3.fromRGB(30, 30, 40)
 G2L["7"]["Size"] = UDim2.new(1, -168, 1, -40)
 G2L["7"]["Position"] = UDim2.new(0, 164, 0, 36)
-G2L["7"]["BorderSizePixel"] = 0
+G2L["7"]["BorderColor3"] = Color3.fromRGB(220, 50, 60)
+G2L["7"]["BorderSizePixel"] = 1
 G2L["7"]["Name"] = "Content"
 G2L["7"]["ScrollBarThickness"] = 4
-G2L["7"]["ScrollBarImageColor3"] = Color3.fromRGB(120, 120, 120)
+G2L["7"]["ScrollBarImageColor3"] = Color3.fromRGB(220, 50, 60)
 G2L["7"]["CanvasSize"] = UDim2.new(0, 0, 0, 0)
 G2L["7"]["ScrollingDirection"] = Enum.ScrollingDirection.Y
 
@@ -182,20 +185,21 @@ G2L["15"]["Name"] = "ToggleScript"
 G2L["16"] = Instance.new("LocalScript", G2L["1"])
 G2L["16"]["Name"] = "NotificationScript"
 
--- Clean Gray Theme Configuration
+-- Venyx Red Theme Configuration
 local Theme = {
-    Background = Color3.fromRGB(58, 58, 58),
-    Sidebar = Color3.fromRGB(38, 38, 38),
-    SidebarInactive = Color3.fromRGB(48, 48, 48),
-    Primary = Color3.fromRGB(65, 105, 225),
-    Secondary = Color3.fromRGB(85, 125, 245),
+    Background = Color3.fromRGB(30, 30, 40),
+    Sidebar = Color3.fromRGB(18, 18, 28),
+    SidebarInactive = Color3.fromRGB(35, 35, 45),
+    Primary = Color3.fromRGB(220, 50, 60),
+    Secondary = Color3.fromRGB(240, 70, 80),
     Text = Color3.fromRGB(255, 255, 255),
     TextDark = Color3.fromRGB(180, 180, 180),
-    Border = Color3.fromRGB(70, 70, 70),
+    Border = Color3.fromRGB(220, 50, 60),
     Success = Color3.fromRGB(72, 187, 120),
     Warning = Color3.fromRGB(245, 158, 11),
     Error = Color3.fromRGB(239, 68, 68),
-    Info = Color3.fromRGB(59, 130, 246)
+    Info = Color3.fromRGB(59, 130, 246),
+    Accent = Color3.fromRGB(255, 60, 70)
 }
 
 -- Require G2L wrapper
@@ -257,12 +261,12 @@ function Library:CreateWindow(config)
         type = type or "info"
         
         local notification = Instance.new("Frame")
-        notification.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-        notification.BorderColor3 = Theme[type:gsub("^%l", string.upper)] or Theme.Info
-        notification.BorderSizePixel = 1
+        notification.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+        notification.BorderColor3 = Theme[type:gsub("^%l", string.upper)] or Theme.Primary
+        notification.BorderSizePixel = 2
         notification.Size = UDim2.new(1, 0, 0, 80)
         notification.Parent = G2L["10"]
-        notification.BackgroundTransparency = 0.1
+        notification.BackgroundTransparency = 0.05
         
         -- Notification corner rounding
         local notificationCorner = Instance.new("UICorner", notification)
@@ -323,7 +327,8 @@ function Library:CreateWindow(config)
         -- Create tab button
         local tabButton = Instance.new("TextButton")
         tabButton.BackgroundColor3 = Theme.SidebarInactive
-        tabButton.BorderSizePixel = 0
+        tabButton.BorderColor3 = Theme.Border
+        tabButton.BorderSizePixel = 1
         tabButton.Size = UDim2.new(1, 0, 0, 36)
         tabButton.Text = Tab.Name
         tabButton.TextColor3 = Theme.TextDark
@@ -409,7 +414,8 @@ function Library:CreateWindow(config)
         function Tab:CreateButton(config)
             local button = Instance.new("TextButton")
             button.BackgroundColor3 = Theme.Primary
-            button.BorderSizePixel = 0
+            button.BorderColor3 = Theme.Accent
+            button.BorderSizePixel = 1
             button.Size = UDim2.new(1, 0, 0, 35)
             button.Text = config.Text or "Button"
             button.TextColor3 = Theme.Text
@@ -445,8 +451,9 @@ function Library:CreateWindow(config)
         
         function Tab:CreateToggle(config)
             local toggleFrame = Instance.new("Frame")
-            toggleFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-            toggleFrame.BorderSizePixel = 0
+            toggleFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+            toggleFrame.BorderColor3 = Theme.Border
+            toggleFrame.BorderSizePixel = 1
             toggleFrame.Size = UDim2.new(1, 0, 0, 35)
             toggleFrame.Parent = tabContent
             
@@ -498,8 +505,9 @@ function Library:CreateWindow(config)
         
         function Tab:CreateSlider(config)
             local sliderFrame = Instance.new("Frame")
-            sliderFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-            sliderFrame.BorderSizePixel = 0
+            sliderFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+            sliderFrame.BorderColor3 = Theme.Border
+            sliderFrame.BorderSizePixel = 1
             sliderFrame.Size = UDim2.new(1, 0, 0, 50)
             sliderFrame.Parent = tabContent
             
@@ -588,8 +596,9 @@ function Library:CreateWindow(config)
         
         function Tab:CreateKeybind(config)
             local keybindFrame = Instance.new("Frame")
-            keybindFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-            keybindFrame.BorderSizePixel = 0
+            keybindFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+            keybindFrame.BorderColor3 = Theme.Border
+            keybindFrame.BorderSizePixel = 1
             keybindFrame.Size = UDim2.new(1, 0, 0, 35)
             keybindFrame.Parent = tabContent
             
@@ -727,6 +736,12 @@ local function C_15()
     local script = G2L["15"]
     local gui = G2L["1"]
     local closeButton = G2L["5"]
+    local mainFrame = G2L["2"]
+    
+    -- Create blur effect
+    local blurEffect = Instance.new("BlurEffect")
+    blurEffect.Size = 0
+    blurEffect.Parent = game.Lighting
     
     -- Close button hover effects
     closeButton.MouseEnter:Connect(function()
@@ -743,16 +758,51 @@ local function C_15()
     
     -- Close button functionality
     closeButton.MouseButton1Click:Connect(function()
-        gui.Enabled = false
+        -- Animate blur out
+        local blurTween = TweenService:Create(blurEffect, TweenInfo.new(0.3), {Size = 0})
+        blurTween:Play()
+        blurTween.Completed:Connect(function()
+            gui.Enabled = false
+        end)
     end)
     
-    -- Toggle with Insert key
+    -- Function to handle GUI visibility changes
+    local function updateVisibility(visible)
+        if visible then
+            gui.Enabled = true
+            -- Animate blur in
+            TweenService:Create(blurEffect, TweenInfo.new(0.3), {Size = 8}):Play()
+            -- Animate main frame in
+            mainFrame.Position = UDim2.new(0.5, -325, 0.5, -300)
+            TweenService:Create(mainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+                Position = UDim2.new(0.5, -325, 0.5, -225)
+            }):Play()
+        else
+            -- Animate blur out
+            TweenService:Create(blurEffect, TweenInfo.new(0.3), {Size = 0}):Play()
+            -- Animate main frame out
+            local exitTween = TweenService:Create(mainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
+                Position = UDim2.new(0.5, -325, 0.5, -300)
+            })
+            exitTween:Play()
+            exitTween.Completed:Connect(function()
+                gui.Enabled = false
+            end)
+        end
+    end
+    
+    -- Toggle with RShift key
     UserInputService.InputBegan:Connect(function(input, gameProcessed)
         if gameProcessed then return end
-        if input.KeyCode == Enum.KeyCode.Insert then
-            gui.Enabled = not gui.Enabled
+        if input.KeyCode == Enum.KeyCode.RightShift then
+            updateVisibility(not gui.Enabled)
         end
     end)
+    
+    -- Initial setup
+    if gui.Enabled then
+        updateVisibility(true)
+    end
 end
 
 -- StarterGui.HydroxideRedThemeGUI.NotificationScript  
