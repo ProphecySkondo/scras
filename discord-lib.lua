@@ -156,6 +156,27 @@ Discord.Parent = game.CoreGui
 Discord.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 Discord.ResetOnSpawn = false
 
+-- Background Blur Effect
+local BlurEffect = Instance.new("BlurEffect")
+BlurEffect.Name = "DiscordLibBlur"
+BlurEffect.Size = 0
+BlurEffect.Parent = game.Lighting
+
+-- Notification Container
+local NotificationContainer = Instance.new("Frame")
+NotificationContainer.Name = "NotificationContainer"
+NotificationContainer.Parent = Discord
+NotificationContainer.BackgroundTransparency = 1
+NotificationContainer.Position = UDim2.new(1, -320, 0, 20)
+NotificationContainer.Size = UDim2.new(0, 300, 1, -40)
+NotificationContainer.ZIndex = 200
+
+local NotificationLayout = Instance.new("UIListLayout")
+NotificationLayout.Parent = NotificationContainer
+NotificationLayout.SortOrder = Enum.SortOrder.LayoutOrder
+NotificationLayout.Padding = UDim.new(0, 10)
+NotificationLayout.VerticalAlignment = Enum.VerticalAlignment.Top
+
 -- Dragging System
 local function MakeDraggable(topbarobject, object)
     local Dragging = nil
@@ -418,6 +439,41 @@ function DiscordLib:Window(text, options)
     
     -- Make window draggable
     MakeDraggable(TopFrame, MainFrame)
+    
+    -- Z-Key Toggle Functionality
+    local isVisible = true
+    
+    -- Enable blur when window is visible
+    BlurEffect.Size = 24
+    
+    -- Function to toggle window visibility
+    local function toggleWindow()
+        isVisible = not isVisible
+        
+        if isVisible then
+            -- Show window
+            MainFrame.Visible = true
+            BlurEffect.Size = 24
+            DiscordLib:Notification("GUI Toggled", "Interface is now visible", "success", 2)
+        else
+            -- Hide window
+            MainFrame.Visible = false
+            BlurEffect.Size = 0
+            DiscordLib:Notification("GUI Hidden", "Press Z to show interface", "info", 2)
+        end
+    end
+    
+    -- Z-Key input handler
+    UserInputService.InputBegan:Connect(function(input, gameProcessed)
+        if gameProcessed then return end
+        
+        if input.KeyCode == Enum.KeyCode.Z then
+            toggleWindow()
+        end
+    end)
+    
+    -- Add toggle method to window data for external control
+    windowData.Toggle = toggleWindow
     
     -- Server Creation Function
     local ServerHold = {}
@@ -1267,97 +1323,175 @@ function DiscordLib:Window(text, options)
     return ServerHold
 end
 
--- Enhanced Notification System
-function DiscordLib:Notification(title, description, buttontext)
-    local NotificationHolder = Instance.new("TextButton")
-    NotificationHolder.Name = "NotificationHolder"
-    NotificationHolder.Parent = Discord
-    NotificationHolder.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
-    NotificationHolder.BackgroundTransparency = 1
-    NotificationHolder.BorderSizePixel = 0
-    NotificationHolder.Size = UDim2.new(1, 0, 1, 0)
-    NotificationHolder.AutoButtonColor = false
-    NotificationHolder.Font = Enum.Font.SourceSans
-    NotificationHolder.Text = ""
-    NotificationHolder.ZIndex = 100
+-- Modern Toast Notification System
+function DiscordLib:Notification(title, description, notificationType, duration)
+    notificationType = notificationType or "info"
+    duration = duration or 4
     
-    Utils.CreateTween(NotificationHolder, {BackgroundTransparency = 0.2}, 0.2)
+    -- Determine notification colors based on type
+    local notificationColors = {
+        success = CurrentTheme.Success,
+        error = CurrentTheme.Error,
+        warning = CurrentTheme.Warning,
+        info = CurrentTheme.Accent
+    }
     
-    local Notification = Instance.new("Frame")
-    Notification.Name = "Notification"
-    Notification.Parent = NotificationHolder
-    Notification.AnchorPoint = Vector2.new(0.5, 0.5)
-    Notification.BackgroundColor3 = CurrentTheme.TertiaryBackground
-    Notification.ClipsDescendants = true
-    Notification.Position = UDim2.new(0.5, 0, 0.5, 0)
-    Notification.Size = UDim2.new(0, 0, 0, 0)
-    Notification.BackgroundTransparency = 1
-    Notification.ZIndex = 101
+    local notificationIcons = {
+        success = "✓",
+        error = "✕",
+        warning = "⚠",
+        info = "ℹ"
+    }
     
-    local NotificationCorner = Instance.new("UICorner")
-    NotificationCorner.CornerRadius = UDim.new(0, 5)
-    NotificationCorner.Parent = Notification
+    local accentColor = notificationColors[notificationType] or CurrentTheme.Accent
+    local iconText = notificationIcons[notificationType] or "ℹ"
     
-    Notification:TweenSize(UDim2.new(0, 346, 0, 176), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.2, true)
-    Utils.CreateTween(Notification, {BackgroundTransparency = 0}, 0.2)
+    -- Create toast notification
+    local Toast = Instance.new("Frame")
+    Toast.Name = "Toast"
+    Toast.Parent = NotificationContainer
+    Toast.BackgroundColor3 = CurrentTheme.TertiaryBackground
+    Toast.BorderSizePixel = 0
+    Toast.Size = UDim2.new(1, 0, 0, 80)
+    Toast.Position = UDim2.new(0, 300, 0, 0) -- Start off-screen
+    Toast.ZIndex = 150
     
-    local TitleLabel = Instance.new("TextLabel")
-    TitleLabel.Name = "TitleLabel"
-    TitleLabel.Parent = Notification
-    TitleLabel.BackgroundTransparency = 1
-    TitleLabel.Position = UDim2.new(0, 0, 0.02, 0)
-    TitleLabel.Size = UDim2.new(0, 346, 0, 68)
-    TitleLabel.Font = Enum.Font.GothamSemibold
-    TitleLabel.Text = title
-    TitleLabel.TextColor3 = CurrentTheme.TextPrimary
-    TitleLabel.TextSize = 20
-    TitleLabel.ZIndex = 102
+    -- Add shadow effect
+    local Shadow = Instance.new("Frame")
+    Shadow.Name = "Shadow"
+    Shadow.Parent = Toast
+    Shadow.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    Shadow.BackgroundTransparency = 0.7
+    Shadow.Position = UDim2.new(0, 2, 0, 2)
+    Shadow.Size = UDim2.new(1, 0, 1, 0)
+    Shadow.ZIndex = 149
     
-    local DescLabel = Instance.new("TextLabel")
-    DescLabel.Name = "DescLabel"
-    DescLabel.Parent = Notification
-    DescLabel.BackgroundTransparency = 1
-    DescLabel.Position = UDim2.new(0.106, 0, 0.318, 0)
-    DescLabel.Size = UDim2.new(0, 272, 0, 63)
-    DescLabel.Font = Enum.Font.Gotham
-    DescLabel.Text = description
-    DescLabel.TextColor3 = CurrentTheme.TextSecondary
-    DescLabel.TextSize = 14
-    DescLabel.TextWrapped = true
-    DescLabel.ZIndex = 102
+    local ShadowCorner = Instance.new("UICorner")
+    ShadowCorner.CornerRadius = UDim.new(0, 8)
+    ShadowCorner.Parent = Shadow
     
-    local AlrightBtn = Instance.new("TextButton")
-    AlrightBtn.Name = "AlrightBtn"
-    AlrightBtn.Parent = Notification
-    AlrightBtn.BackgroundColor3 = CurrentTheme.Accent
-    AlrightBtn.Position = UDim2.new(0.033, 0, 0.789, 0)
-    AlrightBtn.Size = UDim2.new(0, 322, 0, 27)
-    AlrightBtn.Font = Enum.Font.Gotham
-    AlrightBtn.Text = buttontext or "Okay!"
-    AlrightBtn.TextColor3 = CurrentTheme.TextPrimary
-    AlrightBtn.TextSize = 13
-    AlrightBtn.AutoButtonColor = false
-    AlrightBtn.ZIndex = 102
+    local ToastCorner = Instance.new("UICorner")
+    ToastCorner.CornerRadius = UDim.new(0, 8)
+    ToastCorner.Parent = Toast
     
-    local AlrightCorner = Instance.new("UICorner")
-    AlrightCorner.CornerRadius = UDim.new(0, 4)
-    AlrightCorner.Parent = AlrightBtn
+    -- Accent bar
+    local AccentBar = Instance.new("Frame")
+    AccentBar.Name = "AccentBar"
+    AccentBar.Parent = Toast
+    AccentBar.BackgroundColor3 = accentColor
+    AccentBar.BorderSizePixel = 0
+    AccentBar.Size = UDim2.new(0, 4, 1, 0)
+    AccentBar.ZIndex = 151
     
-    AlrightBtn.MouseEnter:Connect(function()
-        Utils.CreateTween(AlrightBtn, {BackgroundColor3 = CurrentTheme.AccentHover}, 0.2)
+    local AccentCorner = Instance.new("UICorner")
+    AccentCorner.CornerRadius = UDim.new(0, 8)
+    AccentCorner.Parent = AccentBar
+    
+    -- Icon
+    local Icon = Instance.new("TextLabel")
+    Icon.Name = "Icon"
+    Icon.Parent = Toast
+    Icon.BackgroundTransparency = 1
+    Icon.Position = UDim2.new(0, 15, 0, 0)
+    Icon.Size = UDim2.new(0, 30, 0, 30)
+    Icon.Font = Enum.Font.GothamBold
+    Icon.Text = iconText
+    Icon.TextColor3 = accentColor
+    Icon.TextSize = 18
+    Icon.TextXAlignment = Enum.TextXAlignment.Center
+    Icon.TextYAlignment = Enum.TextYAlignment.Center
+    Icon.ZIndex = 152
+    
+    -- Title
+    local ToastTitle = Instance.new("TextLabel")
+    ToastTitle.Name = "ToastTitle"
+    ToastTitle.Parent = Toast
+    ToastTitle.BackgroundTransparency = 1
+    ToastTitle.Position = UDim2.new(0, 50, 0, 8)
+    ToastTitle.Size = UDim2.new(1, -80, 0, 20)
+    ToastTitle.Font = Enum.Font.GothamSemibold
+    ToastTitle.Text = title
+    ToastTitle.TextColor3 = CurrentTheme.TextPrimary
+    ToastTitle.TextSize = 14
+    ToastTitle.TextXAlignment = Enum.TextXAlignment.Left
+    ToastTitle.TextTruncate = Enum.TextTruncate.AtEnd
+    ToastTitle.ZIndex = 152
+    
+    -- Description
+    local ToastDesc = Instance.new("TextLabel")
+    ToastDesc.Name = "ToastDesc"
+    ToastDesc.Parent = Toast
+    ToastDesc.BackgroundTransparency = 1
+    ToastDesc.Position = UDim2.new(0, 50, 0, 30)
+    ToastDesc.Size = UDim2.new(1, -80, 0, 40)
+    ToastDesc.Font = Enum.Font.Gotham
+    ToastDesc.Text = description
+    ToastDesc.TextColor3 = CurrentTheme.TextSecondary
+    ToastDesc.TextSize = 12
+    ToastDesc.TextXAlignment = Enum.TextXAlignment.Left
+    ToastDesc.TextYAlignment = Enum.TextYAlignment.Top
+    ToastDesc.TextWrapped = true
+    ToastDesc.ZIndex = 152
+    
+    -- Close button
+    local CloseButton = Instance.new("TextButton")
+    CloseButton.Name = "CloseButton"
+    CloseButton.Parent = Toast
+    CloseButton.BackgroundTransparency = 1
+    CloseButton.Position = UDim2.new(1, -30, 0, 5)
+    CloseButton.Size = UDim2.new(0, 25, 0, 25)
+    CloseButton.Font = Enum.Font.Gotham
+    CloseButton.Text = "×"
+    CloseButton.TextColor3 = CurrentTheme.TextMuted
+    CloseButton.TextSize = 18
+    CloseButton.ZIndex = 153
+    
+    -- Progress bar
+    local ProgressBar = Instance.new("Frame")
+    ProgressBar.Name = "ProgressBar"
+    ProgressBar.Parent = Toast
+    ProgressBar.BackgroundColor3 = accentColor
+    ProgressBar.BorderSizePixel = 0
+    ProgressBar.Position = UDim2.new(0, 0, 1, -3)
+    ProgressBar.Size = UDim2.new(1, 0, 0, 3)
+    ProgressBar.ZIndex = 151
+    
+    -- Animate toast in
+    Toast:TweenPosition(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.5, true)
+    
+    -- Auto-dismiss functionality
+    local function dismissToast()
+        Toast:TweenPosition(UDim2.new(0, 300, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.3, true)
+        task.wait(0.3)
+        Toast:Destroy()
+    end
+    
+    -- Progress bar animation
+    ProgressBar:TweenSize(UDim2.new(0, 0, 0, 3), Enum.EasingDirection.Out, Enum.EasingStyle.Linear, duration, true)
+    
+    -- Auto-dismiss after duration
+    task.spawn(function()
+        task.wait(duration)
+        if Toast and Toast.Parent then
+            dismissToast()
+        end
     end)
     
-    AlrightBtn.MouseLeave:Connect(function()
-        Utils.CreateTween(AlrightBtn, {BackgroundColor3 = CurrentTheme.Accent}, 0.2)
+    -- Manual close
+    CloseButton.MouseButton1Click:Connect(function()
+        dismissToast()
     end)
     
-    AlrightBtn.MouseButton1Click:Connect(function()
-        Utils.CreateTween(NotificationHolder, {BackgroundTransparency = 1}, 0.2)
-        Notification:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.2, true)
-        Utils.CreateTween(Notification, {BackgroundTransparency = 1}, 0.2)
-        task.wait(0.2)
-        NotificationHolder:Destroy()
+    -- Hover effects
+    CloseButton.MouseEnter:Connect(function()
+        CloseButton.TextColor3 = CurrentTheme.TextPrimary
     end)
+    
+    CloseButton.MouseLeave:Connect(function()
+        CloseButton.TextColor3 = CurrentTheme.TextMuted
+    end)
+    
+    return Toast
 end
 
 -- Save configuration on close
