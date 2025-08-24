@@ -1,12 +1,7 @@
---[=[
- ██████╗ ███████╗██████╗     ████████╗██╗  ██╗███████╗███╗   ███╗███████╗
- ██╔══██╗██╔════╝██╔══██╗    ╚══██╔══╝██║  ██║██╔════╝████╗ ████║██╔════╝
- ██████╔╝█████╗  ██║  ██║       ██║   ███████║█████╗  ██╔████╔██║█████╗  
- ██╔══██╗██╔══╝  ██║  ██║       ██║   ██╔══██║██╔══╝  ██║╚██╔╝██║██╔══╝  
- ██║  ██║███████╗██████╔╝       ██║   ██║  ██║███████╗██║ ╚═╝ ██║███████╗
- ╚═╝  ╚═╝╚══════╝╚═════╝        ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝╚══════╝
-                    Professional Red Theme GUI Library v1.0
-]=]
+--[[
+    RED THEME GUI LIBRARY
+    Professional interface with red border theme
+]]
 
 -- Services
 local UserInputService = game:GetService("UserInputService")
@@ -18,7 +13,20 @@ local LocalPlayer = Players.LocalPlayer
 -- Wait for player to load
 repeat task.wait() until LocalPlayer and LocalPlayer.PlayerGui
 
-print("[RED-THEME] Initializing Professional GUI Library...")
+-- Cleanup any existing instances
+for _, gui in pairs(game.CoreGui:GetChildren()) do
+    if gui.Name == "RedThemeGUI" then
+        gui:Destroy()
+    end
+end
+
+for _, effect in pairs(game.Lighting:GetChildren()) do
+    if effect.Name == "RedThemeBlur" then
+        effect:Destroy()
+    end
+end
+
+print("[RED-THEME] Loading GUI Library...")
 
 -- ═══════════════════════════════════════════════════════════════════════════════════════════
 -- LIBRARY CONFIGURATION
@@ -215,7 +223,7 @@ function RedThemeLib:CreateWindow(options)
     mainFrame.Parent = screenGui
     mainFrame.BackgroundColor3 = Theme.Background
     mainFrame.BorderColor3 = Theme.Border
-    mainFrame.BorderSizePixel = 2
+    mainFrame.BorderSizePixel = 1
     mainFrame.Size = size
     mainFrame.Position = position
     mainFrame.ClipsDescendants = true
@@ -262,7 +270,8 @@ function RedThemeLib:CreateWindow(options)
     titleLabel.Position = UDim2.new(0, 5, 0, 0)
     titleLabel.Text = title
     titleLabel.TextColor3 = Theme.TextPrimary
-    titleLabel.TextScaled = true
+    titleLabel.TextScaled = false
+    titleLabel.TextSize = 12
     titleLabel.Font = Enum.Font.JosefinSans
     titleLabel.FontFace = Font.new("rbxasset://fonts/families/JosefinSans.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
     
@@ -275,7 +284,8 @@ function RedThemeLib:CreateWindow(options)
     usernameLabel.Position = UDim2.new(0, 5, 1, -30)
     usernameLabel.Text = LocalPlayer.Name
     usernameLabel.TextColor3 = Theme.TextSecondary
-    usernameLabel.TextScaled = true
+    usernameLabel.TextScaled = false
+    usernameLabel.TextSize = 10
     usernameLabel.Font = Enum.Font.JosefinSans
     usernameLabel.FontFace = Font.new("rbxasset://fonts/families/JosefinSans.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
     
@@ -337,7 +347,8 @@ function RedThemeLib:CreateWindow(options)
     closeButton.Position = UDim2.new(1, -25, 0, 5)
     closeButton.Text = "×"
     closeButton.TextColor3 = Theme.TextPrimary
-    closeButton.TextScaled = true
+    closeButton.TextScaled = false
+    closeButton.TextSize = 14
     closeButton.Font = Enum.Font.GothamBold
     
     local closeCorner = Instance.new("UICorner")
@@ -413,7 +424,8 @@ function RedThemeLib:CreateWindow(options)
         tabLabel.Text = tabName
         tabLabel.TextColor3 = Theme.TextSecondary
         tabLabel.TextXAlignment = Enum.TextXAlignment.Left
-        tabLabel.TextScaled = true
+        tabLabel.TextScaled = false
+        tabLabel.TextSize = 11
         tabLabel.Font = Enum.Font.Arial
         tabLabel.FontFace = Font.new("rbxasset://fonts/families/Arial.json", Enum.FontWeight.Regular, Enum.FontStyle.Italic)
         
@@ -475,7 +487,13 @@ function RedThemeLib:CreateWindow(options)
         
         -- Auto-select first tab
         if #windowData.tabs == 1 then
-            tabButton.MouseButton1Click:Fire()
+            -- Show this tab
+            tabButton.BackgroundColor3 = Theme.AccentDarkRed
+            tabIconImage.ImageColor3 = Theme.TextPrimary
+            tabLabel.TextColor3 = Theme.TextPrimary
+            tabContent.Visible = true
+            tabData.visible = true
+            windowData.currentTab = tabData
         end
         
         -- Tab element creation functions
@@ -493,7 +511,8 @@ function RedThemeLib:CreateWindow(options)
             button.Size = UDim2.new(1, -10, 0, 35)
             button.Text = buttonText
             button.TextColor3 = Theme.TextPrimary
-            button.TextScaled = true
+            button.TextScaled = false
+            button.TextSize = 12
             button.Font = Enum.Font.GothamBold
             button.AutoButtonColor = false
             
@@ -547,7 +566,8 @@ function RedThemeLib:CreateWindow(options)
             toggleLabel.Text = toggleText
             toggleLabel.TextColor3 = Theme.TextPrimary
             toggleLabel.TextXAlignment = Enum.TextXAlignment.Left
-            toggleLabel.TextScaled = true
+            toggleLabel.TextScaled = false
+            toggleLabel.TextSize = 11
             toggleLabel.Font = Enum.Font.Gotham
             
             local toggleButton = Instance.new("TextButton")
@@ -558,7 +578,8 @@ function RedThemeLib:CreateWindow(options)
             toggleButton.Position = UDim2.new(1, -60, 0.5, -10)
             toggleButton.Text = defaultValue and "ON" or "OFF"
             toggleButton.TextColor3 = Theme.TextPrimary
-            toggleButton.TextScaled = true
+            toggleButton.TextScaled = false
+            toggleButton.TextSize = 9
             toggleButton.Font = Enum.Font.GothamBold
             toggleButton.AutoButtonColor = false
             
@@ -623,7 +644,8 @@ function RedThemeLib:CreateWindow(options)
             sliderLabel.Text = sliderText .. ": " .. defaultValue
             sliderLabel.TextColor3 = Theme.TextPrimary
             sliderLabel.TextXAlignment = Enum.TextXAlignment.Left
-            sliderLabel.TextScaled = true
+            sliderLabel.TextScaled = false
+            sliderLabel.TextSize = 10
             sliderLabel.Font = Enum.Font.Gotham
             
             local sliderTrack = Instance.new("Frame")
@@ -727,7 +749,8 @@ function RedThemeLib:CreateWindow(options)
             label.Size = UDim2.new(1, -10, 0, 25)
             label.Text = labelText
             label.TextColor3 = Theme.TextPrimary
-            label.TextScaled = true
+            label.TextScaled = false
+            label.TextSize = 11
             label.Font = Enum.Font.Gotham
             
             local labelCorner = Instance.new("UICorner")
@@ -763,9 +786,8 @@ end
 -- EXPORT LIBRARY
 -- ═══════════════════════════════════════════════════════════════════════════════════════════
 
-print("[RED-THEME] Professional GUI Library Loaded Successfully!")
-print("[RED-THEME] Version 1.0 - Ready for use")
-print("════════════════════════════════════════════════════════════════════")
+print("[RED-THEME] GUI Library Loaded Successfully!")
+print("[RED-THEME] Ready for use")
 
 -- Make library global
 getgenv().RedThemeLib = RedThemeLib

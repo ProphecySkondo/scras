@@ -1,25 +1,29 @@
---[=[
-🔥 RED THEME GUI LIBRARY - DEMONSTRATION SCRIPT 🔥
-Professional Red Theme GUI Library Usage Example
-
-This script demonstrates all the features and capabilities of the 
-Red Theme GUI Library with practical examples.
-]=]
+--[[
+    RED THEME GUI DEMO
+    Usage example for the Red Theme GUI Library
+]]
 
 -- Load the Red Theme GUI Library
 local RedThemeLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/your-repo/RedTheme-GUI-Library.lua"))()
 -- Or if loading locally: local RedThemeLib = require(script.RedThemeGUILibrary)
 
-print("🔥 Starting Red Theme GUI Demonstration...")
+-- Cleanup any existing demo
+for _, gui in pairs(game.CoreGui:GetChildren()) do
+    if gui.Name == "RedThemeGUI" then
+        gui:Destroy()
+    end
+end
+
+print("Loading Red Theme GUI Demo...")
 
 -- ═══════════════════════════════════════════════════════════════════════════════════════════
 -- CREATE MAIN WINDOW
 -- ═══════════════════════════════════════════════════════════════════════════════════════════
 
 local window = RedThemeLib:CreateWindow({
-    Title = "🔥 Red Theme Demo",
-    Size = UDim2.new(0, 500, 0, 450),
-    Position = UDim2.new(0.5, -250, 0.5, -225)
+    Title = "Red Theme Demo",
+    Size = UDim2.new(0, 445, 0, 387),
+    Position = UDim2.new(0.5, -222, 0.5, -193)
 })
 
 -- ═══════════════════════════════════════════════════════════════════════════════════════════
@@ -33,7 +37,7 @@ local mainTab = window:CreateTab({
 
 -- Welcome Label
 local welcomeLabel = mainTab:CreateLabel({
-    Text = "🔥 Welcome to Red Theme GUI Library v1.0!"
+    Text = "Welcome to Red Theme GUI Library"
 })
 
 -- Basic Button Example
@@ -92,7 +96,7 @@ mainTab:CreateButton({
         exampleToggle:Set(false)
         valueSlider:Set(50)
         valueLabel:Set("📊 Current Value: 50")
-        welcomeLabel:Set("🔥 Welcome to Red Theme GUI Library v1.0!")
+        welcomeLabel:Set("Welcome to Red Theme GUI Library")
         window:Notify("Reset Complete", "All values have been reset to defaults!", "info", 3)
     end
 })
