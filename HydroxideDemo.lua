@@ -1,9 +1,29 @@
--- Load Hydroxide-Style Red Theme Library
+-- Load Professional Hydroxide-Style Red Theme Library
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/ProphecySkondo/scras/main/HydroxideRedTheme.lua"))()
+
+-- Main Configuration Table
+local Main = {
+    Settings = {
+        AutoSave = true,
+        NotificationDuration = 4,
+        Theme = "Professional Gray",
+        Version = "2.0"
+    },
+    Features = {
+        Enabled = {},
+        Keybinds = {},
+        Values = {}
+    },
+    Stats = {
+        SessionTime = 0,
+        ButtonClicks = 0,
+        TogglesChanged = 0
+    }
+}
 
 -- Create main window
 local Window = Library:CreateWindow({
-    Title = "Hydroxide Red Theme - Professional GUI"
+    Title = "🔥 Professional Hydroxide GUI - v2.0"
 })
 
 -- Main Tab
@@ -12,41 +32,80 @@ local MainTab = Window:CreateTab({
 })
 
 MainTab:CreateLabel("🔥 Professional Hydroxide-Style Interface")
+MainTab:CreateLabel("Welcome to the updated GUI with rounded close button!")
+
+-- Notification Testing Section
+MainTab:CreateLabel("📢 Notification System:")
 
 MainTab:CreateButton({
-    Text = "Test Notification System",
+    Text = "✅ Test Success Notification",
     Callback = function()
-        Window:Notify("Success", "Professional notification system working perfectly!", "success")
+        Main.Stats.ButtonClicks = Main.Stats.ButtonClicks + 1
+        Window:Notify("Success", "Professional notification system working perfectly! Clicks: " .. Main.Stats.ButtonClicks, "success")
     end
 })
 
 MainTab:CreateButton({
-    Text = "Show Warning",
+    Text = "⚠️ Show Warning Message",
     Callback = function()
-        Window:Notify("Warning", "This is a warning notification with proper styling", "warning")
+        Main.Stats.ButtonClicks = Main.Stats.ButtonClicks + 1
+        Window:Notify("Warning", "This is a warning notification with proper styling. Total clicks: " .. Main.Stats.ButtonClicks, "warning")
     end
 })
 
 MainTab:CreateButton({
-    Text = "Show Error",
+    Text = "❌ Display Error Alert",
     Callback = function()
-        Window:Notify("Error", "Error notification with red accent bar", "error")
+        Main.Stats.ButtonClicks = Main.Stats.ButtonClicks + 1
+        Window:Notify("Error", "Error notification with red accent bar. Buttons pressed: " .. Main.Stats.ButtonClicks, "error")
+    end
+})
+
+MainTab:CreateButton({
+    Text = "ℹ️ Information Message",
+    Callback = function()
+        Main.Stats.ButtonClicks = Main.Stats.ButtonClicks + 1
+        Window:Notify("Info", "Information notification with blue styling. Button interactions: " .. Main.Stats.ButtonClicks, "info")
+    end
+})
+
+-- Feature Controls Section  
+MainTab:CreateLabel("⚙️ Feature Controls:")
+
+MainTab:CreateToggle({
+    Text = "Enable Auto-Save",
+    Default = Main.Settings.AutoSave,
+    Callback = function(state)
+        Main.Settings.AutoSave = state
+        Main.Stats.TogglesChanged = Main.Stats.TogglesChanged + 1
+        Main.Features.Enabled["AutoSave"] = state
+        Window:Notify("Auto-Save", "Auto-save feature " .. (state and "enabled" or "disabled") .. ". Changes: " .. Main.Stats.TogglesChanged, state and "success" or "info")
     end
 })
 
 MainTab:CreateToggle({
-    Text = "Enable Feature",
+    Text = "Professional Mode",
     Default = false,
     Callback = function(state)
-        Window:Notify("Toggle", "Feature " .. (state and "enabled" or "disabled"), state and "success" or "info")
+        Main.Stats.TogglesChanged = Main.Stats.TogglesChanged + 1
+        Main.Features.Enabled["Professional"] = state
+        if state then
+            Window:Notify("Professional Mode", "Professional mode activated with enhanced features!", "success")
+        else
+            Window:Notify("Professional Mode", "Switched to standard mode", "info")
+        end
     end
 })
 
+-- Keybind Section
+MainTab:CreateLabel("⌨️ Keybind Controls:")
+
 MainTab:CreateKeybind({
-    Text = "Test Keybind",
+    Text = "Quick Action",
     Default = "F",
     Callback = function()
-        Window:Notify("Keybind", "Test keybind was pressed!", "info")
+        Main.Features.Keybinds["QuickAction"] = "F"
+        Window:Notify("Quick Action", "Quick action keybind (F) was pressed!", "info")
     end
 })
 
@@ -54,21 +113,48 @@ MainTab:CreateKeybind({
     Text = "Emergency Stop",
     Default = "X",
     Callback = function()
-        Window:Notify("Emergency", "Emergency stop activated!", "error")
+        Main.Features.Keybinds["Emergency"] = "X"
+        Window:Notify("Emergency", "Emergency stop (X) activated!", "error")
     end
 })
 
+MainTab:CreateKeybind({
+    Text = "Save Configuration",
+    Default = "S",
+    Callback = function()
+        Main.Features.Keybinds["Save"] = "S"
+        Window:Notify("Save", "Configuration saved via keybind (S)!", "success")
+    end
+})
+
+-- Slider Controls Section
+MainTab:CreateLabel("🎚️ Slider Controls:")
+
 MainTab:CreateSlider({
-    Text = "Volume",
+    Text = "Master Volume",
     Min = 0,
     Max = 100,
     Default = 50,
     Callback = function(value)
+        Main.Features.Values["Volume"] = value
         if value >= 80 then
-            Window:Notify("Volume", "Volume set to " .. value .. " (High)", "warning")
+            Window:Notify("Volume Control", "Volume set to " .. value .. "% (High Level)", "warning")
         elseif value <= 20 then
-            Window:Notify("Volume", "Volume set to " .. value .. " (Low)", "info")
+            Window:Notify("Volume Control", "Volume set to " .. value .. "% (Low Level)", "info")
+        else
+            -- Silent for mid-range values to avoid spam
         end
+    end
+})
+
+MainTab:CreateSlider({
+    Text = "GUI Transparency",
+    Min = 0,
+    Max = 50,
+    Default = 10,
+    Callback = function(value)
+        Main.Features.Values["Transparency"] = value
+        Window:Notify("Transparency", "GUI transparency adjusted to " .. value .. "%", "info")
     end
 })
 

@@ -79,17 +79,21 @@ G2L["4"]["TextXAlignment"] = Enum.TextXAlignment.Left
 -- StarterGui.HydroxideRedThemeGUI.Main.TopBar.CloseButton
 G2L["5"] = Instance.new("TextButton", G2L["3"])
 G2L["5"]["TextWrapped"] = true
-G2L["5"]["BorderSizePixel"] = 0
+G2L["5"]["BorderSizePixel"] = 1
 G2L["5"]["TextSize"] = 14
 G2L["5"]["TextScaled"] = false
-G2L["5"]["BackgroundColor3"] = Color3.fromRGB(255, 50, 50)
+G2L["5"]["BackgroundColor3"] = Color3.fromRGB(60, 60, 60)
 G2L["5"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 G2L["5"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
-G2L["5"]["Size"] = UDim2.new(0, 50, 1, 0)
-G2L["5"]["BorderColor3"] = Color3.fromRGB(0, 0, 0)
+G2L["5"]["Size"] = UDim2.new(0, 28, 0, 24)
+G2L["5"]["BorderColor3"] = Color3.fromRGB(239, 68, 68)
 G2L["5"]["Text"] = "×"
 G2L["5"]["Name"] = "CloseButton"
-G2L["5"]["Position"] = UDim2.new(1, -50, 0, 0)
+G2L["5"]["Position"] = UDim2.new(1, -32, 0, 4)
+
+-- Close button corner rounding
+G2L["5a"] = Instance.new("UICorner", G2L["5"])
+G2L["5a"]["CornerRadius"] = UDim.new(0, 6)
 
 -- StarterGui.HydroxideRedThemeGUI.Main.Sidebar
 G2L["6"] = Instance.new("Frame", G2L["2"])
@@ -698,6 +702,19 @@ local function C_15()
     local script = G2L["15"]
     local gui = G2L["1"]
     local closeButton = G2L["5"]
+    
+    -- Close button hover effects
+    closeButton.MouseEnter:Connect(function()
+        TweenService:Create(closeButton, TweenInfo.new(0.15), {
+            BackgroundColor3 = Color3.fromRGB(239, 68, 68)
+        }):Play()
+    end)
+    
+    closeButton.MouseLeave:Connect(function()
+        TweenService:Create(closeButton, TweenInfo.new(0.15), {
+            BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+        }):Play()
+    end)
     
     -- Close button functionality
     closeButton.MouseButton1Click:Connect(function()
