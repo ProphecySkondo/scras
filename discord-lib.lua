@@ -574,8 +574,34 @@ function DiscordLib:Window(text, options)
         
         -- Auto-select first server
         if #windowData.servers == 0 then
-            task.wait(0.1)
-            Server.MouseButton1Click:Fire()
+            spawn(function()
+                task.wait(0.1)
+                -- Simulate the click by calling the function directly
+                windowData.currentServerToggled = Server.Name
+                
+                -- Hide all other server contents
+                for _, child in pairs(ContentFrame:GetChildren()) do
+                    if child.Name:find("ServerFrame_") then
+                        child.Visible = false
+                    end
+                end
+                ServerFrame.Visible = true
+                
+                -- Update all server buttons
+                for _, server in pairs(ServersScroll:GetChildren()) do
+                    if server:IsA("TextButton") then
+                        if server == Server then
+                            Utils.CreateTween(server, {BackgroundColor3 = CurrentTheme.Accent}, 0.2)
+                            Utils.CreateTween(server.UICorner, {CornerRadius = UDim.new(0, 15)}, 0.2)
+                            server.ServerWhiteFrame:TweenSize(UDim2.new(0, 11, 0, 46), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.3, true)
+                        else
+                            Utils.CreateTween(server, {BackgroundColor3 = CurrentTheme.SecondaryBackground}, 0.2)
+                            Utils.CreateTween(server.UICorner, {CornerRadius = UDim.new(1, 0)}, 0.2)
+                            server.ServerWhiteFrame:TweenSize(UDim2.new(0, 11, 0, 10), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.3, true)
+                        end
+                    end
+                end
+            end)
         end
         
         table.insert(windowData.servers, Server)
@@ -692,8 +718,32 @@ function DiscordLib:Window(text, options)
             -- Auto-select first channel
             if serverData.firstChannel then
                 serverData.firstChannel = false
-                task.wait(0.1)
-                ChannelBtn.MouseButton1Click:Fire()
+                spawn(function()
+                    task.wait(0.1)
+                    -- Simulate the click by calling the function directly
+                    serverData.currentChannelToggled = ChannelBtn.Name
+                    
+                    -- Hide all other channel contents
+                    for _, child in pairs(ChannelContentFrame:GetChildren()) do
+                        if child.Name:find("ChannelContent_") then
+                            child.Visible = false
+                        end
+                    end
+                    ChannelContent.Visible = true
+                    
+                    -- Update all channel buttons
+                    for _, channel in pairs(ChannelsScroll:GetChildren()) do
+                        if channel:IsA("TextButton") then
+                            if channel == ChannelBtn then
+                                channel.BackgroundColor3 = CurrentTheme.TertiaryBackground
+                                channel.ChannelTitle.TextColor3 = CurrentTheme.TextPrimary
+                            else
+                                channel.BackgroundColor3 = CurrentTheme.SecondaryBackground
+                                channel.ChannelTitle.TextColor3 = CurrentTheme.TextMuted
+                            end
+                        end
+                    end
+                end)
             end
             
             table.insert(serverData.channels, ChannelBtn)
