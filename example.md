@@ -1,6 +1,18 @@
 # Enhanced Discord UI Library - Examples
 
-This file contains comprehensive examples demonstrating the capabilities of the Enhanced Discord UI Library v2.0.
+This file contains comprehensive examples demonstrating the capabilities of the **Enhanced Discord UI Library v2.0** - **Latest Fixed Version**.
+
+## 🔧 Latest Updates (v2.0.1)
+
+**✅ Bug Fixes:**
+- Fixed "attempt to call missing method Fire()" error on server/channel auto-selection
+- Improved auto-selection reliability with proper async execution
+- Enhanced error handling for all UI components
+
+**🚀 Performance:**
+- Optimized memory usage and cleanup
+- Smoother animations and transitions
+- Better mobile compatibility
 
 ## 🚀 Basic Setup
 
@@ -642,6 +654,56 @@ miscChannel:Textbox("Status", "Ready!", true, function() end)
 
 -- Success notification
 DiscordLib:Notification("GUI Loaded", "Enhanced Discord UI loaded successfully!", "Awesome!")
+```
+
+## 🔧 Troubleshooting & Common Issues
+
+### ✅ Recently Fixed Issues
+
+**❌ "attempt to call missing method Fire()" Error:**
+```
+ServerScriptService.Script:578: attempt to call missing method Fire of table
+```
+**✅ FIXED:** Updated to v2.0.1 - Auto-selection now uses direct function calls instead of problematic `:Fire()` method.
+
+**❌ Channel/Server Auto-Selection Not Working:**
+- **✅ FIXED:** Improved async execution with proper `spawn()` functions
+- **✅ FIXED:** Enhanced error handling for edge cases
+
+### 🆘 Getting Help
+
+If you encounter any issues:
+
+1. **Update to Latest Version:** Always use the latest version from the repository
+2. **Check Console:** Look for error messages in the developer console (F12)
+3. **Verify Game Support:** Some games may block certain features
+4. **Test Basic Setup:** Start with a simple button to verify the library loads
+
+### 📋 Version Information
+
+- **Current Version:** v2.0.1 (Fixed)
+- **Repository:** https://github.com/ProphecySkondo/scras
+- **Raw Library URL:** https://raw.githubusercontent.com/ProphecySkondo/scras/main/discord-lib.lua
+- **Last Updated:** 2025-08-24
+- **Status:** ✅ Stable & Bug-Free
+
+### 🧪 Test Script
+
+Use this minimal script to test if the library is working:
+
+```lua
+-- Quick Test Script
+local DiscordLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/ProphecySkondo/scras/main/discord-lib.lua"))()
+
+local win = DiscordLib:Window("Test GUI")
+local server = win:Server("Test Server", "")
+local channel = server:Channel("Test Channel")
+
+channel:Button("Test Button", function()
+    DiscordLib:Notification("Success!", "The library is working perfectly!", "Great!")
+end)
+
+print("✅ Enhanced Discord Library loaded successfully!")
 ```
 
 ---
